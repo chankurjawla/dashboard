@@ -149,6 +149,6 @@ if st.button('Refresh Sectoral Indices'):
 SECTOR_FILE = 'sectoral_indices.csv'
 if os.path.exists(SECTOR_FILE):
     sectoral_df = pd.read_csv(SECTOR_FILE)
-    st.dataframe(Sectoral_df, use_container_width=True, hide_index=True)
+    st.dataframe(sectoral_df, use_container_width=True, hide_index=True)
 else:
     st.info("No Sectoral data found. Click 'Refresh Sectoral Indices' to start PDF scan.")
