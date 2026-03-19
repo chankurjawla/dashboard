@@ -59,4 +59,10 @@ def epf_calculation(name,carry_forward_amount):
     df = df.round(2)
     return df.to_csv(f'epf_{name}.csv', index=False)
 
-epf_calculation("Gulu",3384326)
+def epf_calculation_gulu():
+    """Wrapper function for Gulu's EPF calculation"""
+    return epf_calculation("Gulu", 3384326)
+
+# Call on file execution
+if __name__ == "__main__":
+    epf_calculation_gulu()

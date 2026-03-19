@@ -10,6 +10,8 @@ from metrics import calculate_yoy_metrics
 import ui_components4 as ui 
 from totalequityvalue import totalequityvalue
 import sectoral_indices as si
+from epf_ankur import epf_calculation_ankur
+from epf_gulu import epf_calculation_gulu
 
 # Ensure changes in logic files reflect immediately
 importlib.reload(ui)
@@ -152,3 +154,22 @@ if os.path.exists(SECTOR_FILE):
     st.dataframe(sectoral_df, use_container_width=True, hide_index=True)
 else:
     st.info("No Sectoral data found. Click 'Refresh Sectoral Indices' to start PDF scan.")
+
+st.divider()
+
+# --- 8. EPF Analysis ---
+st.subheader("EPF Analysis")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    if st.button("Run EPF Ankur Analysis"):
+        with st.spinner("Running EPF Ankur calculations..."):
+            epf_calculation_ankur()
+            st.success("EPF Ankur analysis completed!")
+
+with col2:
+    if st.button("Run EPF Gulu Analysis"):
+        with st.spinner("Running EPF Gulu calculations..."):
+            epf_calculation_gulu()
+            st.success("EPF Gulu analysis completed!")
