@@ -16,7 +16,7 @@ importlib.reload(ui)
 importlib.reload(si)
 
 # --- 1. Global Setup ---
-st.set_page_config(page_title="Pi Finance Dash", layout="wide", page_icon="ðŸ“ˆ")
+st.set_page_config(page_title="Pi Finance Dash", layout="wide", page_icon="-")
 datafile = 'transactiondata.csv'
 
 @st.cache_data(show_spinner=False)
@@ -35,7 +35,7 @@ if df_raw is None:
 df_filtered, sel_year, Layout_mode = ui.render_sidebar(df_raw)
 
 # --- 3. Header & Metrics ---
-st.title('ðŸ’° Financial Analytics')
+st.title('Financial Analytics')
 m = calculate_yoy_metrics(df_filtered, sel_year)
 
 c1, c2, c3 = st.columns(3)
@@ -103,7 +103,7 @@ with st.expander(f"Detailed Spending: {selected_month} | {selected_cats}"):
 st.divider()
 
 # --- 6. Equity Trend (Ultra-Fast Strategy) ---
-st.subheader("ðŸ“ˆ Equity Analysis")
+st.subheader("Equity Analysis")
 
 # Button to trigger the heavy work
 if st.button('Refresh Equity Data'):
@@ -115,7 +115,6 @@ if st.button('Refresh Equity Data'):
 EQUITY_FILE = 'total-equity-value.csv'
 if os.path.exists(EQUITY_FILE):
     equity_df = pd.read_csv(EQUITY_FILE)
-    
     tab1, tab2= st.tabs(["Equity Trend", "Table"])
     with tab1:
         chart = alt.Chart(equity_df).mark_line(point=True).encode(
@@ -132,7 +131,7 @@ else:
 st.divider()
 
 # --- 7. Sectoral Indices (Ultra-Fast Strategy) ---
-st.subheader('ðŸ“Š Sectoral Indices')
+st.subheader('Sectoral Indices')
 
 # Button to trigger the 40-second PDF scan
 if st.button('Refresh Sectoral Indices'):
