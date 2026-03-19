@@ -149,8 +149,6 @@ if st.button('Refresh Sectoral Indices'):
 SECTOR_FILE = 'sectoral_indices.csv'
 if os.path.exists(SECTOR_FILE):
     sectoral_df = pd.read_csv(SECTOR_FILE)
-    
-    # We pass Layout_mode to our UI component to handle side-by-side or stacked
-    ui.render_category_breakdown(sectoral_df, sel_year, Layout_mode)
+    st.dataframe(Sectoral_df, use_container_width=True, hide_index=True)
 else:
     st.info("No Sectoral data found. Click 'Refresh Sectoral Indices' to start PDF scan.")
