@@ -59,4 +59,10 @@ def epf_calculation(name,carry_forward_amount):
     df = df.round(2)
     return df.to_csv(f'epf_{name}.csv', index=False)
 
-epf_calculation("Ankur",2615734)
+def epf_calculation_ankur():
+    """Wrapper function for Ankur's EPF calculation"""
+    return epf_calculation("Ankur", 2615734)
+
+# Call on file execution
+if __name__ == "__main__":
+    epf_calculation_ankur()
