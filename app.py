@@ -194,7 +194,7 @@ if not epf.empty:
     st.dataframe(epf, use_container_width=True, hide_index=True)
     st.altair_chart(alt.Chart(epf).mark_line(point=True).encode(
         x='Month:T',
-        y=alt.Y('TotalFund:Q','CumulativeMonthlyContribution:Q'),
+        y=alt.Y('TotalFund:Q'),
         tooltip=['Month', 'TotalFund', 'CumulativeMonthlyContribution']
     ).properties(height=400))
 
