@@ -195,13 +195,11 @@ if not epf.empty:
     # Line for the actual Fund Value
     line = base.mark_line(point=True).encode(
         y='TotalFund:Q',
-        color='Person:N',
-        tooltip=['Person', 'Month', 'TotalFund'])
+        tooltip=['Month', 'TotalFund'])
 
     # Dashed line or Area for the Cumulative Contribution
     contribution = base.mark_line(strokeDash=[5,5]).encode(
         y='CumulativeMonthlyContribution:Q',
-        color='Person:N',
         opacity=alt.value(0.5))
 
     st.altair_chart(line + contribution, use_container_width=True)
