@@ -41,10 +41,10 @@ st.title('Financial Analytics')
 m = calculate_yoy_metrics(df_filtered, sel_year)
 
 c1, c2, c3 = st.columns(3)
-c1.metric(f"Total {sel_year}", f"â‚¹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
-c2.metric("YTD Spending", f"â‚¹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
+c1.metric(f"Total {sel_year}", f"₹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
+c2.metric("YTD Spending", f"₹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
 ytd_var = m['ytd_curr'] - m['ytd_prev']
-c3.metric("YTD Variance", f"â‚¹{abs(ytd_var):,.2f}", "Up" if ytd_var > 0 else "Down", delta_color="normal")
+c3.metric("YTD Variance", f"₹{abs(ytd_var):,.2f}", "Down" if ytd_var > 0 else "Up", delta_color="normal")
 
 st.divider()
 
@@ -173,3 +173,30 @@ with col2:
         with st.spinner("Running EPF Gulu calculations..."):
             epf_calculation_gulu()
             st.success("EPF Gulu analysis completed!")
+
+st.subheader("EPF Projection : Total Fund & Contribution")
+epf_ankur = pd.read_csv('epf_Ankur.csv') if os.path.exists('epf_Ankur.csv') else pd.DataFrame()
+epf_gulu = pd.read_csv('epf_Gulu.csv') if os.path.exists('epf_Gulu.csv') else pd.DataFrame()
+
+selected_person = st.selectbox("Select Person for EPF Analysis", options=["Both", "Ankur", "Gulu"])
+
+if selected_person == "Ankur":
+    epf = epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+elif selected_person == "Gulu":
+    epf = epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+else:
+    epf = pd.concat([
+        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']],
+        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']]
+    ], ignore_index=True)
+
+if not epf.empty:
+    st.dataframe(epf, use_container_width=True, hide_index=True)
+    st.altair_chart(alt.Chart(epf).mark_line(point=True).encode(
+        x='Month:T',
+        y=alt.Y('TotalFund:Q','CumulativeMonthlyContribution:Q'),
+        tooltip=['Month', 'TotalFund', 'CumulativeMonthlyContribution']
+    ).properties(height=400))
+
+else:
+    st.info("No EPF data found. Run the analyses to generate results.") 
