@@ -208,3 +208,25 @@ if not epf.empty:
 
 else:
     st.info("No EPF data found. Run the analyses to generate results.") 
+
+st.divider()
+if not epf.empty:
+    # 1. We "fold" the two columns into one for the Y-axis
+    # 2. We map the 'key' (column name) to Color to create the legend
+    chart = alt.Chart(epf).transform_fold(
+        ['TotalFund', 'CumulativeMonthlyContribution'],
+        as_=['Metric', 'Value']
+    ).mark_line(point=True).encode(
+        x=alt.X('Month:T', title='Month'),
+        y=alt.Y('Value:Q', title=None), # Setting title to None removes the Y-axis label
+        color=alt.Color('Metric:N', title='Legend'), # This creates the legend for the metrics
+        detail='Person:N', # Keeps the lines separate if there are multiple people
+        tooltip=['Person', 'Month', 'Metric:N', 'Value:Q']
+    ).properties(
+        height=400,
+        width='container'
+    ).interactive()
+
+    st.altair_chart(chart, use_container_width=True)
+else:
+    st.info("Nothing")
