@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-def render_epf()
+def render_epf():
     st.subheader("EPF Analysis")
     
     col1, col2 = st.columns(2)
