@@ -12,6 +12,7 @@ from totalequityvalue import totalequityvalue
 import sectoral_indices as si
 from epf_ankur import epf_calculation_ankur
 from epf_gulu import epf_calculation_gulu
+import epfanalysis
 
 # Ensure changes in logic files reflect immediately
 importlib.reload(ui)
@@ -208,3 +209,4 @@ else:
     st.info("No EPF data found. Run the analyses to generate results.") 
 
 st.divider()
+epfanalysis.render_epf()
