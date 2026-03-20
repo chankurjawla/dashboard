@@ -186,9 +186,9 @@ elif selected_person == "Gulu":
     epf = epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
 else:
     epf = pd.concat([
-        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']],
-        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']]
-    ], ignore_index=True)
+        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
+        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+    ], ignore_index=True).gourpby('Month').sum().reset_index()
 
 if not epf.empty:
     base = alt.Chart(epf).encode(x='Month:T')
