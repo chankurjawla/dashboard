@@ -188,7 +188,7 @@ else:
     epf = pd.concat([
         epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
         epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
-    ], ignore_index=True).gourpby('Month').sum().reset_index()
+    ], ignore_index=True).groupby('Month').sum().reset_index()
 
 if not epf.empty:
     base = alt.Chart(epf).encode(x='Month:T')
