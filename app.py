@@ -173,3 +173,30 @@ with col2:
         with st.spinner("Running EPF Gulu calculations..."):
             epf_calculation_gulu()
             st.success("EPF Gulu analysis completed!")
+
+st.subheader("EPF Projection : Total Fund & Contribution")
+epf_ankur = pd.read_csv('epf_Ankur.csv') if os.path.exists('epf_Ankur.csv') else pd.DataFrame()
+epf_gulu = pd.read_csv('epf_Gulu.csv') if os.path.exists('epf_Gulu.csv') else pd.DataFrame()
+
+selected_person = st.selectbox("Select Person for EPF Analysis", options=["Both", "Ankur", "Gulu"])
+
+if selected_person == "Ankur":
+    epf = epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+elif selected_person == "Gulu":
+    epf = epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+else:
+    epf = pd.concat([
+        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']],
+        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']]
+    ], ignore_index=True)
+
+if not epf.empty:
+    st.dataframe(epf, use_container_width=True, hide_index=True)
+    st.altair_chart(alt.Chart(epf).mark_line(point=True).encode(
+        x='Month:T',
+        y=alt.Y('TotalFund:Q','CumulativeMonthlyContribution:Q'),
+        tooltip=['Month', 'TotalFund', 'CumulativeMonthlyContribution']
+    ).properties(height=400))
+
+else:
+    st.info("No EPF data found. Run the analyses to generate results.") 
