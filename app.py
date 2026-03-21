@@ -157,6 +157,4 @@ else:
     st.info("No Sectoral data found. Click 'Refresh Sectoral Indices' to start PDF scan.")
 
 # --- 8. EPF Analysis 
-
-st.divider()
 epfanalysis.render_epf()
