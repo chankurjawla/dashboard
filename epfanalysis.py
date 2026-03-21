@@ -7,13 +7,13 @@ def render_epf():
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("Run EPF Ankur Analysis"):
+        if st.button("Generate EPF projection - Ankur"):
             with st.spinner("Running EPF Ankur calculations..."):
                 epf_calculation_ankur()
                 st.success("EPF Ankur analysis completed!")
     
     with col2:
-        if st.button("Run EPF Gulu Analysis"):
+        if st.button("Generate EPF projection - Gulu"):
             with st.spinner("Running EPF Gulu calculations..."):
                 epf_calculation_gulu()
                 st.success("EPF Gulu analysis completed!")
