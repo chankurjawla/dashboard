@@ -12,6 +12,7 @@ from totalequityvalue import totalequityvalue
 import sectoral_indices as si
 from epf_ankur import epf_calculation_ankur
 from epf_gulu import epf_calculation_gulu
+import epfanalysis
 
 # Ensure changes in logic files reflect immediately
 importlib.reload(ui)
@@ -186,17 +187,26 @@ elif selected_person == "Gulu":
     epf = epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
 else:
     epf = pd.concat([
-        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']],
-        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution', 'Person']]
-    ], ignore_index=True)
+        epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
+        epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
+    ], ignore_index=True).groupby('Month').sum().reset_index()
 
 if not epf.empty:
-    st.dataframe(epf, use_container_width=True, hide_index=True)
-    st.altair_chart(alt.Chart(epf).mark_line(point=True).encode(
-        x='Month:T',
-        y=alt.Y('TotalFund:Q','CumulativeMonthlyContribution:Q'),
-        tooltip=['Month', 'TotalFund', 'CumulativeMonthlyContribution']
-    ).properties(height=400))
+    base = alt.Chart(epf).encode(x='Month:T')
+    # Line for the actual Fund Value
+    line = base.mark_line(point=True).encode(
+        y='TotalFund:Q',
+        tooltip=['Month', 'TotalFund'])
+
+    # Dashed line or Area for the Cumulative Contribution
+    contribution = base.mark_line(strokeDash=[5,5]).encode(
+        y='CumulativeMonthlyContribution:Q',
+        opacity=alt.value(0.5))
+
+    st.altair_chart(line + contribution, use_container_width=True)
 
 else:
     st.info("No EPF data found. Run the analyses to generate results.") 
+
+st.divider()
+epfanalysis.render_epf()
