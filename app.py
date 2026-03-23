@@ -52,6 +52,10 @@ st.divider()
 # --- 4. Monthly Trend ---
 ui.render_monthly_trend(df_filtered, sel_year)
 
+# --- 4.1 Cash Flow
+from cashflow import cash_flow
+cash_flow(df_raw)
+
 # --- 5. Detailed Tables (Expandable to save space) ---
 st.divider()
 
@@ -159,9 +163,6 @@ else:
 # --- 8. EPF Analysis 
 epfanalysis.render_epf()
 
-# --- 9. Cash Flow
-from cashflow import cash_flow
-cash_flow(df_raw)
 
 
 
