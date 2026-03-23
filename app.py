@@ -60,6 +60,7 @@ cash_flow(df_raw)
 st.divider()
 
 # --- 4.5 Month Filter for Detailed Table ---
+st.subheader("Detailed Expense Ledger:")
 # We use the already filtered df_filtered (which has the correct year)
 available_months = sorted(df_filtered['MonthName'].unique().tolist(), 
                           key=lambda x: pd.to_datetime(x, format='%b').month)
