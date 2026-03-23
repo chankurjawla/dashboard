@@ -161,7 +161,7 @@ epfanalysis.render_epf()
 
 # --- 9. Cash Flow
 from cashflow import cash_flow
-cash_flow(raw_df)
+cash_flow(df_raw)
 
 
 
