@@ -164,3 +164,11 @@ else:
 epfanalysis.render_epf()
 
 # --- 9. Equity Analysis
+st.divider()
+st.subheader("Quity:")
+%run MF_Allotment_email_reader.ipynb
+if st.button('Pull MF Allotment'):
+    with st.spinner("Processing..."):
+        push_to_csv("ch.ankurjawla@gmail.com","lupx encd vahn kqym")
+        # will add for Gulu also later
+        st.success("Allotment pull is successful.")
