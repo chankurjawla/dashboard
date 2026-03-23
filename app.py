@@ -163,8 +163,4 @@ else:
 # --- 8. EPF Analysis 
 epfanalysis.render_epf()
 
-
-
-
-
-
+# --- 9. Equity Analysis
