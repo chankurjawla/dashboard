@@ -6,9 +6,9 @@ import altair as alt
 def cash_flow(raw_df):
     df = raw_df.copy()
     conditions = [
-        df['category'].str.contains('Loan', case=False),
-        df['category'].str.contains('investment', case=False),
-        df['category'].str.contains('salary|dividend', case=False) # '|' acts as OR
+        df['Category'].str.contains('Loan', case=False),
+        df['Category'].str.contains('investment', case=False),
+        df['Category'].str.contains('salary|dividend', case=False) # '|' acts as OR
     ]
 
     choices = ['Loan', 'Investment', 'CashIn']
