@@ -1,5 +1,5 @@
 import pandas as pd
-import strealit as st
+import streamlit as st
 
 def cash_flow(raw_df):
     df =raw_df.copy()
