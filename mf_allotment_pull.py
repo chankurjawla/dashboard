@@ -72,6 +72,9 @@ def fetch_and_extract_tables(host, username, password, label):
 
 def extract_table(USERNAME,PASSWORD):
     extracted_tables_data = fetch_and_extract_tables(HOST, USERNAME, PASSWORD, LABEL)
+    if not extracted_tables_data:
+        print("No emails found")
+        return None
 
     df_allotment = extracted_tables_data[0]['dataframes'][0]
 
