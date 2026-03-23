@@ -164,12 +164,11 @@ else:
 epfanalysis.render_epf()
 
 # --- 9. Equity Analysis
-import ipynb.fs.full.MF_Allotment_email_reader as mail_reader
-
+from mf_allotment_pull import push_to_csv
 st.divider()
 st.subheader("Quity:")
 if st.button('Pull MF Allotment'):
     with st.spinner("Processing..."):
-        email_reader.push_to_csv("ch.ankurjawla@gmail.com","lupx encd vahn kqym")
+        push_to_csv("ch.ankurjawla@gmail.com","lupx encd vahn kqym")
         # will add for Gulu also later
         st.success("Allotment pull is successful.")
