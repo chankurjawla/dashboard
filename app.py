@@ -166,7 +166,7 @@ epfanalysis.render_epf()
 # --- 9. Equity Analysis
 from mf_allotment_pull import push_to_csv
 st.divider()
-st.subheader("Quity:")
+st.subheader("Equity:")
 if st.button('Pull MF Allotment'):
     with st.spinner("Processing..."):
         push_to_csv("ch.ankurjawla@gmail.com","lupx encd vahn kqym")
