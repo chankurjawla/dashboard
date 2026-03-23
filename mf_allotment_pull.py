@@ -75,7 +75,10 @@ def extract_table(USERNAME,PASSWORD):
     if not extracted_tables_data:
         print("No emails found")
         return None
-
+    if not extracted_tables_data[0].get('dataframes'):
+        print("No table in emails")
+        return None
+        
     df_allotment = extracted_tables_data[0]['dataframes'][0]
 
     pattern = r'([₹$]?[\d,]+\.?\d*)\s*(.*)'
