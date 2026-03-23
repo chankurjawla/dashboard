@@ -158,3 +158,11 @@ else:
 
 # --- 8. EPF Analysis 
 epfanalysis.render_epf()
+
+# --- 9. Cash Flow
+from cashflow import cashflow
+cashflow(raw_df)
+
+
+
+
