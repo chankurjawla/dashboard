@@ -119,4 +119,6 @@ def push_to_csv(USERNAME,PASSWORD):
     else:
         print("df_allotment does not exist or is empty. No data to write.")
 
-push_to_csv(USERNAME,PASSWORD)
+# Wrap your execution line in this "if" statement:
+if __name__ == "__main__":
+    push_to_csv(USERNAME, PASSWORD)
