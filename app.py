@@ -56,10 +56,6 @@ from cashflow import cash_flow
 st.divider()
 cash_flow(df_raw)
 
-# --- 4.1 Cash Flow
-from cashflow import cash_flow
-cash_flow(df_raw)
-
 # --- 5. Detailed Tables (Expandable to save space) ---
 st.divider()
 
