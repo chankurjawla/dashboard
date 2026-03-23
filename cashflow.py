@@ -15,6 +15,7 @@ def cash_flow(raw_df):
 
     df['Cash_flow'] = np.select(conditions, choices, default='CashOut')
     df_grouped = df.groupby(['MonthYear','Cash_flow'], as_index=False)['Amount'].sum()
-    st.dataframe(df_grouped)
+    df_wide = df_grouped.pivot(index='MonthYear', columns='Cash_flow', value='Amount')
+    st.dataframe(df_wide.tail(6))
     st.divider()
 
