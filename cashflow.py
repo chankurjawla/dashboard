@@ -5,6 +5,8 @@ import altair as alt
 
 def cash_flow(raw_df):
     df = raw_df.copy()
+    
+    # 1. Define conditions (Ensure 'Category' exists in your CSV/Source)
     conditions = [
         df['Category'].str.contains('Loan', case=False, na=False),
         df['Category'].str.contains('investment', case=False, na=False),
