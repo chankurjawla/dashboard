@@ -31,7 +31,12 @@ def househelp_ui(df):
 
     for keyword in ['cook','aaya','ironman']:
         # Find all matching columns
-        matching_cols = df_wide.columns[df_wide.columns.str.contains(keyword, case=False)]
+        #matching_cols = df_wide.columns[df_wide.columns.str.contains(keyword, case=False)]
+        # Change this:
+        # matching_cols = df_wide.columns[df_wide.columns.str.contains(keyword, case=False)]
+
+        # To this:
+        matching_cols = df_wide.columns[df_wide.columns.astype(str).str.contains(keyword, case=False)]
         if not matching_cols.empty:
             # Update the first matching column for row index 10
             df.loc['Budget', matching_cols[0]] = 6000
