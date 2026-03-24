@@ -16,7 +16,7 @@ def househelp_ui(df):
         (df_houehelp['Category'].str.contains('househelp', case=False, na=False)) & 
         (df_houehelp['MonthYear'] > date_threshold)
     ]
-    filtered_df = df_filtered[['MonthYear','Category','Amount']]
+    filtered_df = filtered_df[['MonthYear','Category','Amount']]
     df_grouped = filtered_df.groupby(['MonthYear', 'Category'], as_index=False)['Amount'].sum()
         
     # Fix: changed 'value' to 'values' and added fillna
