@@ -161,3 +161,6 @@ epfanalysis.render_epf()
 # --- 9. Equity Analysis
 from equity_analysis_ui import render_ui
 render_ui()
+
+from househelp import househelp_ui
+househelp_ui()
