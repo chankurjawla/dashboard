@@ -34,9 +34,9 @@ def render_ui():
     
     tab1, tab2, tab3 = st.tabs(["Graph","MF Allotment Report","Share Allotment Report"])
     with tab1:
-
+        st.info("coming soon")
     with tab2:
         st.dataframe(styled_equity_df, use_container_width=True, hide_index=True)
     with tab3:
-
+        st.info("coming soon")
     st.info("Duplicate enteries are highlighted in yellow")
