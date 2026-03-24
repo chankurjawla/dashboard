@@ -13,8 +13,8 @@ def househelp_ui(df):
     # 3. Apply both filters
     # Note: Parentheses () are required around each condition when using &
     filtered_df = df_houehelp[
-        (df_houehelp['category'].str.contains('househelp', case=False, na=False)) & 
-        (df_houehelp['monthyear'] > date_threshold)
+        (df_houehelp['Category'].str.contains('househelp', case=False, na=False)) & 
+        (df_houehelp['MonthYear'] > date_threshold)
     ]
     filtered_df = df_filtered[['MonthYear','Category','Amount']]
     df_grouped = filtered_df.groupby(['MonthYear', 'Category'], as_index=False)['Amount'].sum()
