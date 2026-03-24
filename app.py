@@ -181,6 +181,6 @@ equity_df = pd.read_csv(equity_file)
 def highlight_duplicates(df):
     is_duplicate = df.duplicated(keep=False)
     return ['background-color: yellow' if v else '' for v in is_duplicate]
-styled_equiyt_df = equity_df.style.apply(highlight_duplicates, axis=0)
+styled_equity_df = equity_df.style.apply(highlight_duplicates, axis=0)
 st.dataframe(styled_equity_df, use_container_width=True, hide_index=True)
 st.divider()
