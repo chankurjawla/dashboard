@@ -37,6 +37,7 @@ def render_ui():
         st.info("coming soon")
     with tab2:
         st.dataframe(styled_equity_df, use_container_width=True, hide_index=True)
+        st.info("Duplicate enteries are highlighted in yellow")
     with tab3:
         st.info("coming soon")
-    st.info("Duplicate enteries are highlighted in yellow")
+    
