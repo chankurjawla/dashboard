@@ -8,7 +8,7 @@ def househelp_ui(df):
     df_houehelp['MonthYear'] = pd.to_datetime(df_houehelp['MonthYear'])
 
     # 2. Define the date threshold
-    date_threshold = pd.Timestamp('2026-01-01')
+    date_threshold = pd.Timestamp('2025-12-01')
 
     # 3. Apply both filters
     # Note: Parentheses () are required around each condition when using &
