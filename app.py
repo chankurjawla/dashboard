@@ -171,5 +171,5 @@ if st.button('Allotment - Gulu'):
         push_to_csv("pooja0626@gmail.com","lupx encd vahn kqym")
         st.success("MF Allotment report is processed successfully.")
 equity_file = 'equity-allotment.csv'
-equity_df = pd.read_csv(equity_file, ignore_index=True)
+equity_df = pd.read_csv(equity_file)
 st.dataframe(equity_df, use_container_width=True, hide_index=True)
