@@ -30,9 +30,9 @@ def househelp_ui(df):
     df_wide.loc['Total', numeric_cols] = df_wide[numeric_cols].sum()
 
     # Update the first matching column for row index 10
-    df_wide.loc['Budget', 'HOUSEHELP - COOK'] = 6000
-    df_wide.loc['Budget', 'HOUSEHELP - AAYA'] = 13000
-    df_wide.loc['Budget', 'HOUSEHELP - IRON'] = 700
+    df_wide.loc['Budget', 'HOUSEHELP-COOK'] = 6000
+    df_wide.loc['Budget', 'HOUSEHELP-AAYA'] = 13000
+    df_wide.loc['Budget', 'HOUSEHELP-IRONING'] = 700
 
     for i in range(df_wide.shape[1]-1):
         df_wide.loc['Due',df_wide.columns[i+1]] = df_wide.loc['Budget',df_wide.columns[i+1]]*months - df_wide.loc['Total',df_wide.columns[i+1]]
