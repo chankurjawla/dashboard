@@ -34,7 +34,7 @@ def househelp_ui(df):
     df_wide.loc['Budget', 'HOUSEHELP - AAYA']] = 13000
     df_wide.loc['Budget', 'HOUSEHELP - IRON']] = 700
 
-    for i df_wide.shape[1]-1:
+    for i in range(df_wide.shape[1]-1):
         df_wide.loc['Due',df_wide.columns[i+1]] = df_wide.loc['Budget',df_wide.columns[i+1]]*months - df_wide.loc['Total',df_wide.columns[i+1]]
 
     #  Display
