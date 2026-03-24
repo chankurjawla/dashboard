@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-df househelp_ui(df):
+def househelp_ui(df):
     df_houehelp = df.copy()
 
     # 1. Convert monthyear to datetime (if it isn't already)
