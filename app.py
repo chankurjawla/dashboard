@@ -183,4 +183,4 @@ def highlight_duplicates(df):
     return ['background-color: yellow' if v else '' for v in is_duplicate]
 styled_equity_df = equity_df.style.apply(highlight_duplicates, axis=0)
 st.dataframe(styled_equity_df, use_container_width=True, hide_index=True)
-st.divider()
+st.info("Duplicate enteries are highlighted in yellow")
