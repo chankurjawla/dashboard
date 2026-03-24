@@ -16,7 +16,7 @@ def render_ui():
             with st.spinner("Processing..."):
                 push_to_csv("pooja0626@gmail.com","lupx encd vahn kqym")
                 st.success("MF Allotment report is processed successfully.")
-    with col2:
+    with col3:
         if st.button('Refresh Price'):
             with st.spinner("Processing..."):
                 #push_to_csv("pooja0626@gmail.com","lupx encd vahn kqym")
