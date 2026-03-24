@@ -39,15 +39,6 @@ if df_raw is None:
 df_filtered, sel_year = ui.render_sidebar(df_raw)
 
 # --- 3. Header & Metrics ---
-st.title('Financial Analytics New Code')
-#m = calculate_yoy_metrics(df_filtered, sel_year)
-
-#c1, c2, c3 = st.columns(3)
-#c1.metric(f"Total {sel_year}", f"₹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
-#c2.metric("YTD Spending", f"₹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
-#ytd_var = m['ytd_curr'] - m['ytd_prev']
-#c3.metric("YTD Variance", f"₹{abs(ytd_var):,.2f}", "Down" if ytd_var > 0 else "Up", delta_color="normal")
-
 populatemetrics(df_filtered,sel_year)
 
 st.divider()
@@ -171,8 +162,14 @@ epfanalysis.render_epf()
 from mf_allotment_pull import push_to_csv
 st.divider()
 st.subheader("Equity:")
-if st.button('Pull MF Allotment'):
+if st.button('Allotment - Ankur'):
     with st.spinner("Processing..."):
         push_to_csv("ch.ankurjawla@gmail.com","lupx encd vahn kqym")
-        # will add for Gulu also later
-        st.success("Allotment pull is successful.")
+        st.success("MF Allotment report is processed successfully.")
+if st.button('Allotment - Gulu'):
+    with st.spinner("Processing..."):
+        push_to_csv("pooja0626@gmail.com","lupx encd vahn kqym")
+        st.success("MF Allotment report is processed successfully.")
+equity_file = 'equity-allotment.csv'
+equity_df = pd.read_csv(equity_file, ignore_index=True)
+st.dataframe(equity_df, use_container_width=True, hide_index=True)
