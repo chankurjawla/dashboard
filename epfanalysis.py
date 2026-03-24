@@ -1,19 +1,22 @@
 import streamlit as st
+import altair as alt
 import pandas as pd
-
+from epf_gulu import epf_calculation_gulu
+from epf_ankur import epf_calculation_ankur
+import os
 def render_epf():
     st.subheader("EPF Analysis")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        if st.button("Run EPF Ankur Analysis"):
+        if st.button("Generate EPF projection - Ankur"):
             with st.spinner("Running EPF Ankur calculations..."):
                 epf_calculation_ankur()
                 st.success("EPF Ankur analysis completed!")
     
     with col2:
-        if st.button("Run EPF Gulu Analysis"):
+        if st.button("Generate EPF projection - Gulu"):
             with st.spinner("Running EPF Gulu calculations..."):
                 epf_calculation_gulu()
                 st.success("EPF Gulu analysis completed!")
