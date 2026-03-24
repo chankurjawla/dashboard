@@ -163,4 +163,4 @@ from equity_analysis_ui import render_ui
 render_ui()
 
 from househelp import househelp_ui
-househelp_ui()
+househelp_ui(df_filtered)
