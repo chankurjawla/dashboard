@@ -20,7 +20,7 @@ def househelp_ui(df):
     df_grouped = filtered_df.groupby(['MonthYear', 'Category'], as_index=False)['Amount'].sum()
         
     # Fix: changed 'value' to 'values' and added fillna
-    df_wide = df_grouped.pivot(index='MonthYear', columns='Amount', values='Amount').fillna(0)
+    df_wide = df_grouped.pivot(index='MonthYear', columns='Category', values='Amount').fillna(0)
     months = df_wide.shape[0]
 
     # Select only numeric columns to avoid errors with text or dates
