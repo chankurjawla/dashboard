@@ -6,7 +6,8 @@ import altair as alt
 
 # Custom Modules
 from processor import clean_data
-from metrics import calculate_yoy_metrics
+#from metrics import calculate_yoy_metrics
+from metrics import populatemetrics
 import ui_components4 as ui 
 from totalequityvalue import totalequityvalue
 import sectoral_indices as si
@@ -35,22 +36,25 @@ if df_raw is None:
 
 # --- 2. Render Sidebar ---
 # Returns filtered data, year, and the layout mode (Side-by-Side or Stacked)
-df_filtered, sel_year, Layout_mode = ui.render_sidebar(df_raw)
+df_filtered, sel_year = ui.render_sidebar(df_raw)
 
 # --- 3. Header & Metrics ---
-st.title('Financial Analytics')
-m = calculate_yoy_metrics(df_filtered, sel_year)
+st.title('Financial Analytics New Code')
+#m = calculate_yoy_metrics(df_filtered, sel_year)
 
-c1, c2, c3 = st.columns(3)
-c1.metric(f"Total {sel_year}", f"₹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
-c2.metric("YTD Spending", f"₹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
-ytd_var = m['ytd_curr'] - m['ytd_prev']
-c3.metric("YTD Variance", f"₹{abs(ytd_var):,.2f}", "Down" if ytd_var > 0 else "Up", delta_color="normal")
+#c1, c2, c3 = st.columns(3)
+#c1.metric(f"Total {sel_year}", f"₹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
+#c2.metric("YTD Spending", f"₹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
+#ytd_var = m['ytd_curr'] - m['ytd_prev']
+#c3.metric("YTD Variance", f"₹{abs(ytd_var):,.2f}", "Down" if ytd_var > 0 else "Up", delta_color="normal")
+
+populatemetrics(df_filtered,sel_year)
 
 st.divider()
 
 # --- 4. Monthly Trend ---
 ui.render_monthly_trend(df_filtered, sel_year)
+
 # --- 4.1 Cash Flow
 from cashflow import cash_flow
 st.divider()
