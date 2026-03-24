@@ -8,7 +8,7 @@ def househelp_ui(df):
     df_houehelp['MonthYear'] = pd.to_datetime(df_houehelp['MonthYear'])
 
     # 2. Define the date threshold
-    date_threshold = pd.Timestamp('2025-06-01')
+    date_threshold = pd.Timestamp('2026-03-01')
 
     # 3. Apply both filters
     # Note: Parentheses () are required around each condition when using &
@@ -38,7 +38,7 @@ def househelp_ui(df):
         df_wide.loc['Due',df_wide.columns[i+1]] = df_wide.loc['Budget',df_wide.columns[i+1]]*months - df_wide.loc['Total',df_wide.columns[i+1]]
 
     #  Display
-    st.subheader("Househelp Dues since Jan-2026:")
+    st.subheader("Househelp Dues since Mar-2026:")
     # Ensure it's sorted by date if MonthYear is a datetime type
     st.dataframe(df_wide)
     st.divider()
