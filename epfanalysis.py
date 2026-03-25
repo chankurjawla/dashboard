@@ -5,27 +5,26 @@ from epf_gulu import epf_calculation_gulu
 from epf_ankur import epf_calculation_ankur
 import os
 def render_epf():
+    st.divider()
     st.subheader("EPF Analysis")
     
-    col1, col2 = st.columns(2)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         if st.button("Generate EPF projection - Ankur"):
             with st.spinner("Running EPF Ankur calculations..."):
                 epf_calculation_ankur()
                 st.success("EPF Ankur analysis completed!")
-    
+        epf_ankur = pd.read_csv('epf_Ankur.csv') if os.path.exists('epf_Ankur.csv') else pd.DataFrame()    
     with col2:
         if st.button("Generate EPF projection - Gulu"):
             with st.spinner("Running EPF Gulu calculations..."):
                 epf_calculation_gulu()
                 st.success("EPF Gulu analysis completed!")
+        epf_gulu = pd.read_csv('epf_Gulu.csv') if os.path.exists('epf_Gulu.csv') else pd.DataFrame()
     
-    st.subheader("EPF Projection : Total Fund & Contribution")
-    epf_ankur = pd.read_csv('epf_Ankur.csv') if os.path.exists('epf_Ankur.csv') else pd.DataFrame()
-    epf_gulu = pd.read_csv('epf_Gulu.csv') if os.path.exists('epf_Gulu.csv') else pd.DataFrame()
-    col1, col2 = st.columns(2)
-    with col1:
+    #col1, col2 = st.columns(2)
+    with col3:
         selected_person = st.selectbox("Select Person for EPF Analysis", options=["Both", "Ankur", "Gulu"])
     
         if selected_person == "Ankur":
@@ -37,7 +36,7 @@ def render_epf():
                 epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
                 epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
             ], ignore_index=True).groupby('Month').sum().reset_index()
-    with col2:
+    with col4:
         # --- Time slider begins
         # 1. Ensure the column is in datetime format
         epf['Month'] = pd.to_datetime(epf['Month'])
