@@ -158,6 +158,4 @@ else:
 # --- 8. EPF Analysis 
 epfanalysis.render_epf()
 
-# --- 9. Equity Analysis
-from househelp import househelp_ui
-househelp_ui(df_filtered)
+

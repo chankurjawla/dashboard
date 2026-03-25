@@ -128,7 +128,7 @@ def render_monthly_trend(df, sel_year):
     styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
 
     # Create the tab objects
-    tab1, tab2, tab3= st.tabs(["Graph", "Detailed","Fixed&Variable"])
+    tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
     with tab1:
         #st.header("Results")
         st.altair_chart(category_histo, width='stretch', theme='streamlit')
@@ -137,4 +137,8 @@ def render_monthly_trend(df, sel_year):
         st.dataframe(styled_df, width="stretch",height=650)
     with tab3:
         #st.header("Raw Data")
-        st.dataframe(styled_df, width="stretch",height=650)        
+        st.dataframe(styled_df, width="stretch",height=650) 
+    with tab4:           
+        # --- 9. Equity Analysis
+        from househelp import househelp_ui
+        househelp_ui(df)
