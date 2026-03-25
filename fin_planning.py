@@ -2,6 +2,7 @@ import streamlit as st
 import altair as alt
 import pandas as pd
 import os
+from fin_metrics import populatemetrics
 from totalequityvalue import totalequityvalue
 import sectoral_indices as si
 from epf_ankur import epf_calculation_ankur
@@ -10,8 +11,10 @@ import epfanalysis
 
 st.sidebar.markdown("Financial Planning")
 st.markdown("# Financila Planning")
+# --- 1. Metrics
+populatemetrics()
 
-# --- 6. Equity Trend (Ultra-Fast Strategy) ---
+# --- 2. Equity Trend (Ultra-Fast Strategy) ---
 st.subheader("Equity Analysis")
 
 # Button to trigger the heavy work
@@ -39,7 +42,7 @@ else:
 
 st.divider()
 
-# --- 7. Sectoral Indices (Ultra-Fast Strategy) ---
+# --- 3. Sectoral Indices (Ultra-Fast Strategy) ---
 st.subheader('Sectoral Indices')
 
 # Button to trigger the 40-second PDF scan
@@ -62,5 +65,5 @@ if os.path.exists(SECTOR_FILE):
 else:
     st.info("No Sectoral data found. Click 'Refresh Sectoral Indices' to start PDF scan.")
 
-# --- 8. EPF Analysis 
+# --- 4. EPF Analysis 
 epfanalysis.render_epf()
