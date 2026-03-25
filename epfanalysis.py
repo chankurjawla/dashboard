@@ -8,7 +8,7 @@ def render_epf():
     st.divider()
     st.subheader("EPF Analysis")
     
-    col1, col2, col3, col4 = st.columns(5)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         if st.button("Generate EPF projection - Ankur"):
@@ -25,7 +25,7 @@ def render_epf():
     
     #col1, col2 = st.columns(2)
     with col3:
-        selected_person = st.selectbox("Select Person for EPF Analysis", options=["Both", "Ankur", "Gulu"])
+        selected_person = st.selectbox("Owner", options=["Both", "Ankur", "Gulu"])
     
         if selected_person == "Ankur":
             epf = epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']]
@@ -47,18 +47,15 @@ def render_epf():
         # 3. Create the slider
         # Passing a tuple to 'value' creates a range slider
         selected_range = st.slider(
-            "Select Date Range",
+            "Select Month Range",
             min_value=min_date,
             max_value=max_date,
             value=(min_date, max_date),
             format="MMM YYYY"
         )
-
         # 4. Filter the DataFrame based on selection
         start_date, end_date = selected_range
         filtered_epf = epf[(epf['Month'] >= start_date) & (epf['Month'] <= end_date)]
-
-        st.write(f"Showing data from {start_date.date()} to {end_date.date()}")
         # --- Time slider ends here
 
     if not filtered_epf.empty:
