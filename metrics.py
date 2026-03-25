@@ -1,4 +1,5 @@
 import pandas as pd
+import streamlit as st
 
 def calculate_yoy_metrics(df, selected_year):
     curr_df = df[df['Year'] == selected_year]
@@ -26,3 +27,14 @@ def calculate_yoy_metrics(df, selected_year):
         "ytd_prev": ytd_prev,
         "ytd_diff_pct": get_pct_diff(ytd_curr, ytd_prev)
     }
+
+def populatemetrics(df,sel_year):
+    st.title('Financial Analytics')
+    m = calculate_yoy_metrics(df, sel_year)
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric(f"Total {sel_year}", f"₹{m['curr_total']:,.2f}", f"{m['total_diff_pct']:.1f}% vs Prev")
+    c2.metric("YTD Spending", f"₹{m['ytd_curr']:,.2f}", f"{m['ytd_diff_pct']:.1f}% vs Prev YTD", delta_color="inverse")
+    ytd_var = m['ytd_curr'] - m['ytd_prev']
+    c3.metric("YTD Variance", f"₹{abs(ytd_var):,.2f}", "Down" if ytd_var > 0 else "Up", delta_color="normal")
+

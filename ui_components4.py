@@ -11,7 +11,10 @@ def render_sidebar(df):
     all_cats = sorted([str(cat) for cat in unique_cats])
     default_exclusions = [
         cat for cat in all_cats 
-        if "investment" in cat.lower() or "not applicable" in cat.lower() or "income" in cat.lower()
+        if "investment" in cat.lower() or 
+        "not applicable" in cat.lower() or
+        "income" in cat.lower() or
+        "loan" in cat.lower()
         ]
     excluded = st.sidebar.multiselect('Exclude Categories', options=all_cats, default=default_exclusions)
     df_filtered1 = df[~df['Category'].isin(excluded)].copy()
@@ -19,7 +22,9 @@ def render_sidebar(df):
     # 1.1 Category filter
     default_inclusions = [
         cat for cat in all_cats
-        if "investment" not in cat.lower() or "not applicable" not in cat.lower()
+        if "investment" not in cat.lower() or
+        "not applicable" not in cat.lower() or
+        "loan" not in cat.lower()
         ]
     included = st.sidebar.multiselect('Include Categories', options=all_cats, default=default_inclusions)
     df_filtered = df_filtered1[df_filtered1['Category'].isin(included)].copy()
@@ -30,25 +35,14 @@ def render_sidebar(df):
     sel_year = st.sidebar.selectbox('Current Year', options=all_years)
 
     st.sidebar.divider()
-
-    # 3. Layout Toggle (The Switch)
-    st.sidebar.subheader("Display Settings")
-    layout_mode = st.sidebar.radio(
-        "Dashboard Layout",
-        options=["Side-by-Side", "Stacked"],
-        index=0,
-        help="Side-by-Side is best for Desktop; Stacked is best for Mobile/iPad."
-    )
     
-    st.sidebar.divider()
-    
-    # 4. System Controls
+    # 3. System Controls
     st.sidebar.subheader("System Controls")
     if st.sidebar.button('Sync Data & Refresh', use_container_width=True):
         st.cache_data.clear()
         st.rerun()
         
-    return df_filtered, sel_year, layout_mode
+    return df_filtered, sel_year
 
 def render_monthly_trend(df, sel_year):
     """Renders the discrete monthly line chart comparing current vs last year."""
@@ -95,7 +89,7 @@ def render_monthly_trend(df, sel_year):
     st.divider()
     
     st.subheader(f"Monthly Spending Trend: {sel_year} vs {sel_year-1}")
-    # 2. Monthly Histogram
+    # 2. Monthly Histogram - Curr Vs last year
     monthly_trend_histo = alt.Chart(monthly_data).mark_bar().encode(
         # Sort X by the 'Month' number so it's chronological
         x=alt.X('MonthName', sort=alt.EncodingSortField(field='Month', order='ascending'), title='Month'),
@@ -109,7 +103,7 @@ def render_monthly_trend(df, sel_year):
     )
     st.altair_chart(monthly_trend_histo, width='stretch', theme='streamlit')
 
-    # 2. Category split histogram
+    # 2. Category split histogram for Curr year
     st.divider()
     category_df = curryear_df.groupby(['Category'])['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
     category_histo = alt.Chart(category_df).mark_bar().encode(
@@ -125,21 +119,26 @@ def render_monthly_trend(df, sel_year):
     st.subheader("Spending by Category : YTD")
     #st.altair_chart(category_histo, width='stretch', theme='streamlit')
     
-    # Category Pivot table/ Heatmap
-    #st.divider()
+    # Category Heatmap for Curr year
     pivot_1 = curryear_df.pivot_table(
         index='Category', columns='MonthName', values='Amount', 
         aggfunc='sum', observed=False
     )
     
     styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
-    #st.dataframe(styled_df, width="stretch",height=600)
 
     # Create the tab objects
-    tab1, tab2= st.tabs(["Graph", "Detailed",])
+    tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
     with tab1:
         #st.header("Results")
         st.altair_chart(category_histo, width='stretch', theme='streamlit')
     with tab2:
         #st.header("Raw Data")
         st.dataframe(styled_df, width="stretch",height=650)
+    with tab3:
+        #st.header("Raw Data")
+        st.dataframe(styled_df, width="stretch",height=650) 
+    with tab4:           
+        # --- 9. Equity Analysis
+        from househelp import househelp_ui
+        househelp_ui(df)
