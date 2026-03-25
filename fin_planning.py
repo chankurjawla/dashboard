@@ -9,8 +9,8 @@ from epf_ankur import epf_calculation_ankur
 from epf_gulu import epf_calculation_gulu
 import epfanalysis
 
-st.sidebar.markdown("Financial Planning")
-st.markdown("# Financial Planning")
+st.sidebar.markdown("Investment Analytics")
+
 # --- 1. Metrics
 populatemetrics()
 

@@ -1,8 +1,8 @@
 import streamlit as st
 
 # Define the pages
-expenses = st.Page("expenses.py", title="Expenses", icon="💰")
-fin_planning = st.Page("fin_planning.py", title="Financial Planning", icon="🦈")
+expenses = st.Page("expenses.py", title="Financial Analytics", icon="💰")
+fin_planning = st.Page("fin_planning.py", title="Investment Analytics", icon="🦈")
 archived_app = st.Page("archived_app.py", title="Financial Analytics - Archived", icon="💾")
 
 # Set up navigation
