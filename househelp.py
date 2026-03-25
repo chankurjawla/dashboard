@@ -40,5 +40,4 @@ def househelp_ui(df):
     st.divider()
     st.subheader("Househelp Dues since Mar-2026:")
     # Ensure it's sorted by date if MonthYear is a datetime type
-    st.dataframe(df_wide[['MonthYear','HOUSEHELP-COOK','HOUSEHELP-AAYA']])
-    st.divider()
+    st.dataframe(df_wide[['HOUSEHELP-COOK','HOUSEHELP-AAYA']])

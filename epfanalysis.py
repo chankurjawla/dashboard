@@ -36,10 +36,9 @@ def render_epf():
             epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
             epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
         ], ignore_index=True).groupby('Month').sum().reset_index()
-    #################
+    # --- Time slider begins
     # 1. Ensure the column is in datetime format
     epf['Month'] = pd.to_datetime(epf['Month'])
-
     # 2. Get the min and max dates
     min_date = epf['Month'].min().to_pydatetime()
     max_date = epf['Month'].max().to_pydatetime()
@@ -59,10 +58,7 @@ def render_epf():
     filtered_epf = epf[(epf['Month'] >= start_date) & (epf['Month'] <= end_date)]
 
     st.write(f"Showing data from {start_date.date()} to {end_date.date()}")
-    st.dataframe(filtered_epf)
-    ##########################
-
-
+    # --- Time slider ends here
 
     if not filtered_epf.empty:
         base = alt.Chart(filtered_epf).encode(x='Month:T')
