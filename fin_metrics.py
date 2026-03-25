@@ -26,7 +26,7 @@ row = epf[epf['Month'] == current_month]
 if not row.empty:
     current_epf = row['TotalFund'].iloc[0]
     current_contri = row['CumulativeMonthlyContribution'].iloc[0]
-    ratio = current_epf / current_contri if current_contri != 0 else 0
+    ratio = current_epf / current_contri
 else:
     current_epf, current_contri, ratio = 0, 0, 0
 

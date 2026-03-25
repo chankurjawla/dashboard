@@ -10,7 +10,7 @@ from epf_gulu import epf_calculation_gulu
 import epfanalysis
 
 st.sidebar.markdown("Financial Planning")
-st.markdown("# Financila Planning")
+st.markdown("# Financial Planning")
 # --- 1. Metrics
 populatemetrics()
 
