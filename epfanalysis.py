@@ -8,7 +8,7 @@ def render_epf():
     st.divider()
     st.subheader("EPF Analysis")
     
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4 = st.columns(5)
     
     with col1:
         if st.button("Generate EPF projection - Ankur"):
