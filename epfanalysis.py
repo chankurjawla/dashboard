@@ -36,11 +36,38 @@ def render_epf():
             epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
             epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
         ], ignore_index=True).groupby('Month').sum().reset_index()
-    
-    if not epf.empty:
-        base = alt.Chart(epf).encode(x='Month:T')
+    #################
+    # 1. Ensure the column is in datetime format
+    epf['Month'] = pd.to_datetime(epf['Month'])
+
+    # 2. Get the min and max dates
+    min_date = epf['Month'].min().to_pydatetime()
+    max_date = epf['Month'].max().to_pydatetime()
+
+    # 3. Create the slider
+    # Passing a tuple to 'value' creates a range slider
+    selected_range = st.slider(
+        "Select Date Range",
+        min_value=min_date,
+        max_value=max_date,
+        value=(min_date, max_date),
+        format="MMM YYYY"
+    )
+
+    # 4. Filter the DataFrame based on selection
+    start_date, end_date = selected_range
+    filtered_epf = epf[(epf['Month'] >= start_date) & (epf['Month'] <= end_date)]
+
+    st.write(f"Showing data from {start_date.date()} to {end_date.date()}")
+    st.dataframe(filtered_epf)
+    ##########################
+
+
+
+    if not filtered_epf.empty:
+        base = alt.Chart(filtered_epf).encode(x='Month:T')
         # Line for the actual Fund Value
-        line = base.mark_line(point=True).encode(
+        line = base.mark_line().encode(
             y='TotalFund:Q',
             tooltip=['Month', 'TotalFund'])
     
@@ -54,4 +81,3 @@ def render_epf():
     else:
         st.info("No EPF data found. Run the analyses to generate results.") 
     
-    st.divider()
