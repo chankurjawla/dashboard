@@ -13,7 +13,7 @@ epf = pd.concat([
     epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
     epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
     ], ignore_index=True).groupby('Month').sum().reset_index()
-epf['Month'] = pd.datetime(epf['Month'])
+epf['Month'] = pd.to_datetime(epf['Month'])
 current_epf = epf[epf['Month']==current_month]['TotalFund']
 current_contri = epf[epf['Month']==current_month]['CumulativeMonthlyContribution']
 def populatemetrics():
