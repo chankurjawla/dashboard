@@ -6,7 +6,7 @@ Expenses = st.Page("expenses.py", title="Expenses", icon="🎈")
 #page_3 = st.Page("page_3.py", title="Page 3", icon="🎉")
 
 # Set up navigation
-pg = st.navigation([Expenses, page_2, page_3])
+pg = st.navigation([Expenses])
 
 # Run the selected page
 pg.run()
