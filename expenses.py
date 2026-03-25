@@ -6,18 +6,9 @@ import altair as alt
 
 # Custom Modules
 from processor import clean_data
-#from metrics import calculate_yoy_metrics
 from metrics import populatemetrics
 import ui_components4 as ui 
-from totalequityvalue import totalequityvalue
-import sectoral_indices as si
-from epf_ankur import epf_calculation_ankur
-from epf_gulu import epf_calculation_gulu
-import epfanalysis
 
-# Ensure changes in logic files reflect immediately
-importlib.reload(ui)
-importlib.reload(si)
 
 # --- 1. Global Setup ---
 st.set_page_config(page_title="Pi Finance Dash", layout="wide", page_icon="-")
