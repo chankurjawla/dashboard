@@ -136,6 +136,7 @@ def render_monthly_trend(df, sel_year):
         height=400,
         width='container'
     ).interactive()
+    st.altair_chart(monthly_trend_histo, use_container_width=True)
 
     #####----------
 
