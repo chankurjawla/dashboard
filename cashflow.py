@@ -6,7 +6,7 @@ import altair as alt
 def cash_flow(raw_df):
     df = raw_df.copy()
     df = df[~(df['Category']=='Not Applicable')]
-    cats = df.columns.to_list()
+    cats = df['Category'].unique().tolist()
     st.write(f'{cats}')
     # 1. Define conditions (Ensure 'Category' exists in your CSV/Source)
     conditions = [
