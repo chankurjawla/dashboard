@@ -27,7 +27,7 @@ def househelp_ui(df):
     numeric_cols = df_wide.select_dtypes(include=['number']).columns
 
     # Add a 'Total' row at the bottom
-    df_wide.loc['Total', numeric_cols] = df_wide[numeric_cols].sum()
+    df_wide.loc['Total', numeric_cols] = df_wide[numeric_cols].sum(),fillna(0)
 
     # Update the first matching column for row index 10
     df_wide.loc['Budget', 'HOUSEHELP-COOK'] = 6000
