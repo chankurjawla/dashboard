@@ -103,6 +103,42 @@ def render_monthly_trend(df, sel_year):
     )
     st.altair_chart(monthly_trend_histo, width='stretch', theme='streamlit')
 
+    #####----------
+    # 1. Define the base chart logic shared by both bars and labels
+    base = alt.Chart(monthly_data).encode(
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
+        y=alt.Y('Amount:Q', title='Total Spending'),
+        xOffset='Year:N',
+        color='Year:N'
+    )
+
+    # 2. Create the bars
+    bars = base.mark_bar().encode(
+        tooltip=[
+            alt.Tooltip('Year:N'),
+            alt.Tooltip('MonthName:N'),
+            alt.Tooltip('Amount:Q', format='$,.2f')
+        ]
+    )
+
+    # 3. Create concise labels (using SI prefix 's' for 'k', 'M', etc.)
+    labels = base.mark_text(
+        dy=-10,       # Shift text above the bar
+        baseline='bottom',
+        fontSize=10,
+        fontWeight='bold'
+    ).encode(
+        text=alt.Text('Amount:Q', format='$.2s') # '$.2s' makes it concise (e.g., $1.5k)
+    )
+
+    # 4. Layer them together
+    monthly_trend_histo = (bars + labels).properties(
+        height=400,
+        width='container'
+    ).interactive()
+
+    #####----------
+
     # 2. Category split histogram for Curr year
     st.divider()
     category_df = curryear_df.groupby(['Category'])['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
