@@ -87,24 +87,45 @@ def render_monthly_trend(df, sel_year):
     st.table(styled_yearly_agg_df)
 
     st.divider()
-    
-    st.subheader(f"Monthly Spending Trend: {sel_year} vs {sel_year-1}")
+
     # 2. Monthly Histogram - Curr Vs last year
-    monthly_trend_histo = alt.Chart(monthly_data).mark_bar().encode(
-        # Sort X by the 'Month' number so it's chronological
-        x=alt.X('MonthName', sort=alt.EncodingSortField(field='Month', order='ascending'), title='Month'),
-        y=alt.Y('Amount', title='Total Spending'),
-        xOffset = 'Year:N',
-        # This creates the two separate lines
-        color='Year:N', 
-        tooltip=['Year', 'MonthName', 'Amount']
-    ).properties(
-        height=400
+    st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
+    # A. Define the base chart logic shared by both bars and labels
+    base = alt.Chart(monthly_data).encode(
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
+        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s')),
+        xOffset='Year:N',
+        color='Year:N'
     )
-    st.altair_chart(monthly_trend_histo, width='stretch', theme='streamlit')
+
+    # B. Create the bars
+    bars = base.mark_bar().encode(
+        tooltip=[
+            alt.Tooltip('Year:N'),
+            alt.Tooltip('MonthName:N'),
+            alt.Tooltip('Amount:Q', format='.2f')
+        ]
+    )
+
+    # C. Create concise labels (using SI prefix 's' for 'k', 'M', etc.)
+    labels = base.mark_text(
+        dy=-10,       # Shift text above the bar
+        baseline='bottom',
+        fontSize=10,
+        fontWeight='bold'
+    ).encode(
+        text=alt.Text('Amount:Q', format='.2s') # '$.2s' makes it concise (e.g., $1.5k)
+    )
+
+    # D. Layer them together
+    monthly_trend_histo = (bars + labels).properties(
+        height=400,
+        width='container'
+    )
+    st.altair_chart(monthly_trend_histo, use_container_width=True)
+    st.divider()
 
     # 2. Category split histogram for Curr year
-    st.divider()
     category_df = curryear_df.groupby(['Category'])['Amount'].sum().reset_index().sort_values(by='Amount', ascending=False)
     category_histo = alt.Chart(category_df).mark_bar().encode(
         # Sort X by the 'Month' number so it's chronological
@@ -117,7 +138,6 @@ def render_monthly_trend(df, sel_year):
         height=400
     )
     st.subheader("Spending by Category : YTD")
-    #st.altair_chart(category_histo, width='stretch', theme='streamlit')
     
     # Category Heatmap for Curr year
     pivot_1 = curryear_df.pivot_table(

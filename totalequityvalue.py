@@ -19,7 +19,7 @@ def totalequityvalue():
     pivot_df = daily_net_quantity_df.pivot_table(index='Date', columns='Security Symbol', values='Net Quantity', fill_value=0)
     weekly_net_quantity_df = pivot_df.resample('W-FRI').sum()
     weekly_cumulative_net_quantity_df = weekly_net_quantity_df.cumsum()
-    weekly_cumulative_net_quantity_df = weekly_cumulative_net_quantity_df.reindex(weekly_date_range, fill_value=0).ffill()
+    weekly_cumulative_net_quantity_df = weekly_cumulative_net_quantity_df.reindex(weekly_date_range).ffill()
     #print(weekly_cumulative_net_quantity_df.head())
 
     price_data = yf.download(equity_df['Security Symbol'].unique().tolist(),
@@ -31,7 +31,7 @@ def totalequityvalue():
 
     weekly_price_data = weekly_price_data.reindex(weekly_cumulative_net_quantity_df.index).ffill()
 
-    TotalValue = (weekly_cumulative_net_quantity_df * weekly_price_data.fillna(0))
+    TotalValue = (weekly_cumulative_net_quantity_df * weekly_price_data)
     TotalValue['TotalValue'] = TotalValue.sum(axis=1)
     TotalValue['Date'] = TotalValue.index
     return TotalValue

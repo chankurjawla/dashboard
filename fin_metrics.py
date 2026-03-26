@@ -1,10 +1,10 @@
 import pandas as pd
 import streamlit as st
-from datetime import datetime
+import datetime as dt
 import os
 
 # 1. Standardize the date to the 1st of the month
-current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 current_month_str = current_month.strftime('%Y-%m-%d')
 
 EQUITY_FILE = 'total-equity-value.csv'
