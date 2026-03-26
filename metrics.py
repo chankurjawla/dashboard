@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
 
-current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+current_month = pd.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 current_month_str = current_month.strftime('%Y-%m-%d')
 
 def calculate_yoy_metrics(df, selected_year):
