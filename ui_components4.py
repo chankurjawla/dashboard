@@ -121,7 +121,7 @@ def render_monthly_trend(df, sel_year):
     monthly_trend_histo = (bars + labels).properties(
         height=400,
         width='container'
-    ).interactive()
+    )
     st.altair_chart(monthly_trend_histo, use_container_width=True)
     st.divider()
 
@@ -138,7 +138,6 @@ def render_monthly_trend(df, sel_year):
         height=400
     )
     st.subheader("Spending by Category : YTD")
-    #st.altair_chart(category_histo, width='stretch', theme='streamlit')
     
     # Category Heatmap for Curr year
     pivot_1 = curryear_df.pivot_table(
