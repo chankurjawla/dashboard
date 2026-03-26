@@ -19,6 +19,8 @@ def cash_flow(raw_df):
     # 2. Assign values
     df['Cash_flow'] = np.select(conditions, choices, default='CashOut')
     
+    st.dataframe(df(df['MonthYear'] == '2026-03-01 00:00:00')['Category','Amount'])
+
     # 3. Group and Pivot (Note the 's' in values)
     df_grouped = df.groupby(['MonthYear', 'Cash_flow'], as_index=False)['Amount'].sum()
     
