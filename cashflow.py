@@ -7,7 +7,7 @@ def cash_flow(raw_df):
     df = raw_df.copy()
     df = df[~(df['Category']=='Not Applicable')]
     cats = df.columns.to_list()
-    st.write(f{cats})
+    st.write(f'{cats}')
     # 1. Define conditions (Ensure 'Category' exists in your CSV/Source)
     conditions = [
         df['Category'].str.contains('Loan', case=False, na=False),
