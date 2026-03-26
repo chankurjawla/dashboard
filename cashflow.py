@@ -18,7 +18,7 @@ def cash_flow(raw_df):
 
     # 2. Assign values
   
-    df['Cash_flow'] = np.select(conditions, choices, default='CashOut')
+    df['Cash_flow'] = np.select(conditions, choices, default='Expense')
 
     # 3. Group and Pivot (Note the 's' in values)
     df_grouped = df.groupby(['MonthYear', 'Cash_flow'], as_index=False)['Amount'].sum()
