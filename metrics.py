@@ -26,7 +26,7 @@ def calculate_yoy_metrics(df, selected_year):
         return ((curr - prev) / prev) * 100
 
     return {
-        "curr_total": curr_total,
+        "curr_month_total": curr_month_total,
         "prev_total": prev_total,
         "total_diff_pct": get_pct_diff(curr_total, prev_total),
         "ytd_curr": ytd_curr,
