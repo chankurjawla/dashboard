@@ -6,7 +6,7 @@ import altair as alt
 def cash_flow(raw_df):
     df = raw_df.copy()
     df = df[~(df['Category']=='Not Applicable')]
-    cats = df.columns
+    cats = df.columns.to_list()
     st.write(f{cats})
     # 1. Define conditions (Ensure 'Category' exists in your CSV/Source)
     conditions = [
@@ -19,7 +19,7 @@ def cash_flow(raw_df):
 
     # 2. Assign values
     df['Cash_flow'] = np.select(conditions, choices, default='CashOut')
-    
+
     # 3. Group and Pivot (Note the 's' in values)
     df_grouped = df.groupby(['MonthYear', 'Cash_flow'], as_index=False)['Amount'].sum()
 
