@@ -5,6 +5,7 @@ import altair as alt
 
 def cash_flow(raw_df):
     df = raw_df.copy()
+    df = df[~(df['Category']=='Not Applicable')]
     
     # 1. Define conditions (Ensure 'Category' exists in your CSV/Source)
     conditions = [
