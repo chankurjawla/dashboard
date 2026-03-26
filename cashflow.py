@@ -11,7 +11,7 @@ def cash_flow(raw_df):
     conditions = [
         df['Category'].str.contains('Loan', case=False, na=False),
         df['Category'].str.contains('investment', case=False, na=False),
-        df['Category'].str.contains('salary|dividend', case=False, na=False)
+        df['Category'].str.contains('salary', case=False, na=False)
     ]
 
     choices = ['Loan', 'Investment', 'CashIn']
