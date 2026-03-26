@@ -31,7 +31,7 @@ def totalequityvalue():
 
     weekly_price_data = weekly_price_data.reindex(weekly_cumulative_net_quantity_df.index).ffill()
 
-    TotalValue = (weekly_cumulative_net_quantity_df * weekly_price_data.fillna(0))
+    TotalValue = (weekly_cumulative_net_quantity_df * weekly_price_data)
     TotalValue['TotalValue'] = TotalValue.sum(axis=1)
     TotalValue['Date'] = TotalValue.index
     return TotalValue
