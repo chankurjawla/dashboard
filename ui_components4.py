@@ -107,7 +107,7 @@ def render_monthly_trend(df, sel_year):
     # 1. Define the base chart logic shared by both bars and labels
     base = alt.Chart(monthly_data).encode(
         x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='₹.2s', labelFlush=False)),
+        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='₹.2s')),
         xOffset='Year:N',
         color='Year:N'
     )
