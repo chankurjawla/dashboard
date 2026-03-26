@@ -24,12 +24,13 @@ if st.button('Refresh Equity Data'):
         st.rerun()
 
 # Instant Load from CSV
-EQUITY_FILE = 'total-equity-value.csv'
-if os.path.exists(EQUITY_FILE):
-    equity_df = pd.read_csv(EQUITY_FILE)
-    tab1, tab2= st.tabs(["Equity Trend", "Table"])
+equity_df = pd.read_csv('equity_data.csv')
+EQUITY_VALUE_FILE = 'total-equity-value.csv'
+if os.path.exists(EQUITY_VALUE_FILE):
+    equity_value_df = pd.read_csv(EQUITY_VALUE_FILE)
+    tab1, tab2= st.tabs(["Equity Trend", "Equity Qty. Table"])
     with tab1:
-        chart = alt.Chart(equity_df).mark_line(point=True).encode(
+        chart = alt.Chart(equity_value_df).mark_line(point=True).encode(
             x='Date:T',
             y='TotalValue:Q',
             tooltip=['Date', 'TotalValue']
