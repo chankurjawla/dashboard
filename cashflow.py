@@ -18,6 +18,8 @@ def cash_flow(raw_df):
     choices = ['Loan', 'Investment', 'CashIn']
 
     # 2. Assign values
+    cats = df['Category'].unique().tolist()
+    st.write(f'{cats}')    
     df['Cash_flow'] = np.select(conditions, choices, default='CashOut')
 
     # 3. Group and Pivot (Note the 's' in values)
