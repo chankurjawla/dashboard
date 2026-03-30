@@ -160,8 +160,11 @@ def render_monthly_trend(df, sel_year):
         columns = "MonthName",
         values="Amount",
         aggfunc="sum",
-        observed=False
+        observed=True
         )
+    # Drops columns where every single value is 0
+    pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
+
     styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
 
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
