@@ -142,8 +142,13 @@ def render_monthly_trend(df, sel_year):
     # Category Heatmap for Curr year
     pivot_1 = curryear_df.pivot_table(
         index='Category', columns='MonthName', values='Amount', 
-        aggfunc='sum', observed=False
+        aggfunc='sum', observed=True
     )
+    #drop columns with all values as zero
+    pivot_1 = pivot_1.loc[:, (pivot_1 != 0).any(axis=0)]
+
+    styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
+
 
     # 3. Fixed Vs Variable
     all_cats = curryear_df['Category'].unique().tolist()
@@ -165,9 +170,9 @@ def render_monthly_trend(df, sel_year):
     # Drops columns where every single value is 0
     pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
 
-    styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
-
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
+
+
 
     # Create the tab objects
     tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
