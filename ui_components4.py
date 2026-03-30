@@ -149,7 +149,7 @@ def render_monthly_trend(df, sel_year):
     all_cats = curryear_df['Category'].unique().tolist()
     variabletypelist = [
         cat for cat in all_cats
-        if "rent" not in cat.lower() or
+        if "rent" not in cat.lower() and
         "househelp" not in cat.lower()
         ]
     FixedVariable_df = curryear_df.copy()
