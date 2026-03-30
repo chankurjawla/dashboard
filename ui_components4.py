@@ -144,8 +144,27 @@ def render_monthly_trend(df, sel_year):
         index='Category', columns='MonthName', values='Amount', 
         aggfunc='sum', observed=False
     )
-    
-    styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
+
+    # 3. Fixed Vs Variable
+    all_cats = curryear_df['Category'].unique().tolist()
+    variabletypelist = [
+        cat for cat in all_cats
+        if "rent" not in cat.lower() or
+        "househelp" not in cat.lower()
+        ]
+    FixedVariable_df = curryear_df.copy()
+    FixedVariable_df.loc[FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Variable"
+    FixedVariable_df.loc[~FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Fixed"
+    pivot_2 = FixedVariable_df.pivot_table(
+        index = "expensetype",
+        columns = "MonthName",
+        values="Amount",
+        aggfunc="sum",
+        observed=False
+        )
+    styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
+
+    styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
 
     # Create the tab objects
     tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
@@ -157,7 +176,7 @@ def render_monthly_trend(df, sel_year):
         st.dataframe(styled_df, width="stretch",height=650)
     with tab3:
         #st.header("Raw Data")
-        st.dataframe(styled_df, width="stretch",height=650) 
+        st.dataframe(styled_df2, width="stretch",height=650) 
     with tab4:           
         # --- 9. Equity Analysis
         from househelp import househelp_ui

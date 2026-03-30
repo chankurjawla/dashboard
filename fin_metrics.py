@@ -3,7 +3,7 @@ import streamlit as st
 import datetime as dt
 import os
 
-# 1. Standardize the date to the 1st of the month
+# 00. Standardize the date to the 1st of the month
 current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 current_month_str = current_month.strftime('%Y-%m-%d')
 
@@ -11,7 +11,7 @@ EQUITY_FILE = 'total-equity-value.csv'
 epf_ankur = pd.read_csv('epf_Ankur.csv') if os.path.exists('epf_Ankur.csv') else pd.DataFrame()
 epf_gulu = pd.read_csv('epf_Gulu.csv') if os.path.exists('epf_Gulu.csv') else pd.DataFrame()
 
-# 2. Combine and ensure 'Month' is datetime
+# 1. EPF
 epf = pd.concat([
     epf_ankur[['Month', 'TotalFund','CumulativeMonthlyContribution']],
     epf_gulu[['Month', 'TotalFund','CumulativeMonthlyContribution']]
@@ -29,6 +29,14 @@ if not row.empty:
     ratio = current_epf / current_contri
 else:
     current_epf, current_contri, ratio = 0, 0, 0
+
+# 2. Equity
+
+
+# 3. MF
+
+
+# 4. Sum Equity anf MF
 
 def populatemetrics():
     st.title('Investment Analytics')
