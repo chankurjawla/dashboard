@@ -155,7 +155,8 @@ def render_monthly_trend(df, sel_year):
     variabletypelist = [
         cat for cat in all_cats
         if "rent" not in cat.lower() and
-        "househelp" not in cat.lower()
+        "househelp" not in cat.lower() and
+        "child education" not in cat.lower()
         ]
     FixedVariable_df = curryear_df.copy()
     FixedVariable_df.loc[FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Variable"
