@@ -9,7 +9,7 @@ def nps():
     date_range = pd.date_range(start=start_date, end=end_date, freq="MS")
     df = pd.DataFrame(index= date_range, columns =['Ankur','Gulu'])
     df.loc["2026-03-01","Ankur"]= 496700
-    df.loc["2026-03-01","Ankur"]= 496700
+    df.loc["2026-03-01","Gulu"]= 496700
     df = df.ffill()
     df.to_csv('nps.csv')
 
