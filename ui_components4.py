@@ -162,8 +162,8 @@ def render_monthly_trend(df, sel_year):
     FixedVariable_df.loc[FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Variable"
     FixedVariable_df.loc[~FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Fixed"
     pivot_2 = FixedVariable_df.pivot_table(
-        index = "expensetype",
-        columns = "MonthName",
+        index = "MonthName",
+        columns = "expensetype",
         values="Amount",
         aggfunc="sum",
         observed=True
