@@ -32,7 +32,7 @@ else:
     current_epf, current_contri, ratio = 0, 0, 0
 
 # 2. NPS
-nps = current_nps() if os.path.exists('nps.csv') else 0
+nps = current_nps()
 
 # 2. Equity
 
