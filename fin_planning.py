@@ -71,6 +71,3 @@ else:
 
 # --- 4. EPF Analysis 
 epfanalysis.render_epf()
-
-# --- 5. NPS
-nps()
