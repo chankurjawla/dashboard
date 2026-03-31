@@ -11,7 +11,7 @@ def nps():
     df.loc["2026-03-01","Ankur"]= 496700
     df.loc["2026-03-01","Ankur"]= 496700
     df = df.ffill()
-    df.to_csv('nps.cvs')
+    df.to_csv('nps.csv')
 
 def current_nps():
     current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
