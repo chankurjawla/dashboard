@@ -2,7 +2,7 @@ import pandas as pd
 import streamlit as st
 import datetime as dt
 import os
-import current_nps from nps
+from nps import current_nps
 
 # 00. Standardize the date to the 1st of the month
 current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
