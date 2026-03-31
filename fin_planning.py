@@ -8,12 +8,12 @@ import sectoral_indices as si
 from epf_ankur import epf_calculation_ankur
 from epf_gulu import epf_calculation_gulu
 import epfanalysis
-import nps
+from nps import nps
 
 st.sidebar.markdown("Investment Analytics")
 if st.sidebar.button('NPS ⚙️'):
     with st.spinner('refreshing nps data'):
-        nps.nps()
+        nps()
         st.rerun()
 
 # --- 1. Metrics
