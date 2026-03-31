@@ -14,7 +14,7 @@ def nps():
     df.to_csv('nps.csv')
 
 def current_nps():
-    current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     current_month_str = current_month.strftime('%Y-%m-%d')
     nps = pd.read_csv('nps.csv') if os.path.exists('nps.csv') else pd.DataFrame()
     nps_now =nps.loc[current_month_str]['Ankur'].iloc[0]+nps.loc[current_month_str]['Gulu'].iloc[0]
