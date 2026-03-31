@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import datetime as dt
 import os
+import nps
 
 # 00. Standardize the date to the 1st of the month
 current_month = dt.datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
@@ -30,6 +31,9 @@ if not row.empty:
 else:
     current_epf, current_contri, ratio = 0, 0, 0
 
+# 2. NPS
+nps = nps.current_nps()
+
 # 2. Equity
 
 
@@ -49,5 +53,8 @@ def populatemetrics():
         delta=f"{ratio:.1f}x Contribution",
         delta_color="normal"
     )
-    c2.metric("Equity Value", "Coming Soon")
+    c2.metric(
+        "NPS",
+        value=f"₹{nps:,.2f}",
+    )
     c3.metric("Total Net Worth", "Coming Soon")
