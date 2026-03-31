@@ -1,6 +1,6 @@
 import pandas as pd
 from datetime import datetime
-import streamlist as st
+import streamlit as st
 import os
 
 start_date = '2026-03-01'
