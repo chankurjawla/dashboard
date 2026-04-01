@@ -174,7 +174,7 @@ def render_monthly_trend(df, sel_year):
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
     ### pie
     category_df = category_df.sort_values(by='Amount', ascending=False).reset_index()
-    chart = alt.Chart(category_df).mark_arc(innerRadius=50).encode(
+    chart = alt.Chart(category_df).mark_arc(innerRadius=60).encode(
         theta=alt.Theta(field="Amount", type="quantitative"),
         color=alt.Color(field="Category", type="nominal"),
         tooltip=['Category', 'Amount']
