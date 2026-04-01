@@ -51,10 +51,7 @@ def render_monthly_trend(df, sel_year):
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
     monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
-    monthly_data = currnlastyear_df.groupby(['MonthYear'])['Amount'].sum().reset_index()
-    #monthly_data = monthly_data.drop(monthly_data[monthly_data['Amount']==0].index)
     monthly_data = monthly_data.sort_values(['Year', 'Month'])
-    monthly_data['LY_Amount'] = monthly_data['Amount'].shift(12)
     
     # Spending over the years
     yearly_agg_data =df.groupby('Year')['Amount'].sum().reset_index().sort_values(['Year'], ascending=False)
@@ -71,7 +68,7 @@ def render_monthly_trend(df, sel_year):
         'YoY Change': YoY_Change
     })
     
-    #yearly_agg_data = yearly_agg_data.set_index('Year')
+    yearly_agg_data = yearly_agg_data.set_index('Year')
     
     def style_yoy(val):
         color = '#d4edda' if val < 0 else '#f8d7da' # Light Green / Light Red
@@ -86,73 +83,27 @@ def render_monthly_trend(df, sel_year):
     
     st.subheader(f"Spendings over the years:")
     
-    #st.dataframe(styled_yearly_agg_df, width='stretch')
-    st.table(styled_yearly_agg_df, hide_index=True)
+    #st.dataframe(styled_yearly_agg_df, width='stretch', hide_index=True)
+    st.table(styled_yearly_agg_df)
 
     st.divider()
-
-############
-
-    st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
-
-    # Base chart using the filtered chart_data
-    base = alt.Chart(monthly_data).encode(
-        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month', order='ascending'), title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s'))
-    )
-
-    # Current Year Bars
-    bars = base.mark_bar(color='#4c78a8').encode(
-        tooltip=[
-            alt.Tooltip('MonthName:N', title='Month'),
-            alt.Tooltip('Amount:Q', format=',.2f', title='Current Amount'),
-            alt.Tooltip('LY_Amount:Q', format=',.2f', title='Last Year Amount')
-        ]
-    )
-
-    # Last Year Comparison (as a Tick or Line)
-    ly_comparison = base.mark_tick(
-        color='orange',
-        size=20, # Width of the tick
-        thickness=3
-    ).encode(
-        y='LY_Amount:Q'
-    )
-
-    # Labels for Current Year
-    labels = base.mark_text(dy=-10, baseline='bottom', fontWeight='bold').encode(
-        text=alt.Text('Amount:Q', format='.2s')
-    )
-
-    # Layer bars, ticks (LY), and labels
-    monthly_trend_histo = (bars + ly_comparison + labels).properties(
-        height=400,
-        width='container'
-    )
-
-    st.altair_chart(monthly_trend_histo, use_container_width=True)
-
-
-
-############
-
-
-
 
     # 2. Monthly Histogram - Curr Vs last year
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
     # A. Define the base chart logic shared by both bars and labels
     base = alt.Chart(monthly_data).encode(
-        x=alt.X('MonthYear:N', title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s'))
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
+        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s')),
+        xOffset='Year:N',
+        color='Year:N'
     )
 
     # B. Create the bars
     bars = base.mark_bar().encode(
         tooltip=[
-            alt.Tooltip('MonthYear:N'),
-            alt.Tooltip('Amount:Q', format='.2f'),
-            alt.Tooltip('LY_Amount:Q', format='.2f')
+            alt.Tooltip('Year:N'),
+            alt.Tooltip('MonthName:N'),
+            alt.Tooltip('Amount:Q', format='.2f')
         ]
     )
 
@@ -236,5 +187,6 @@ def render_monthly_trend(df, sel_year):
         #st.header("Raw Data")
         st.dataframe(styled_df2, width="stretch",height=650) 
     with tab4:           
+        # --- 9. Equity Analysis
         from househelp import househelp_ui
         househelp_ui(df)
