@@ -51,7 +51,7 @@ def render_monthly_trend(df, sel_year):
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
     monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
-    monthly_data = monthly_data.drop(monthly_data[monthly_data['Amount']==0].index)
+    #monthly_data = monthly_data.drop(monthly_data[monthly_data['Amount']==0].index)
     monthly_data = monthly_data.sort_values(['Year', 'Month'])
     
     # Spending over the years
