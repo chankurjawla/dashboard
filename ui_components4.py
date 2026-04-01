@@ -69,7 +69,7 @@ def render_monthly_trend(df, sel_year):
         'YoY Change': YoY_Change
     })
     
-    yearly_agg_data = yearly_agg_data.set_index('Year')
+    #yearly_agg_data = yearly_agg_data.set_index('Year')
     
     def style_yoy(val):
         color = '#d4edda' if val < 0 else '#f8d7da' # Light Green / Light Red
