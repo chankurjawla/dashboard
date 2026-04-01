@@ -53,8 +53,7 @@ def render_monthly_trend(df, sel_year):
     monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
     monthly_data = currnlastyear_df.groupby(['MonthYear'])['Amount'].sum().reset_index()
     #monthly_data = monthly_data.drop(monthly_data[monthly_data['Amount']==0].index)
-    #monthly_data = monthly_data.sort_values(['Year', 'Month'])
-    monthly_data = monthly_data.sort_values(['MonthYear'])
+    monthly_data = monthly_data.sort_values(['Year', 'Month'])
     monthly_data['LY_Amount'] = monthly_data['Amount'].shift(12)
     
     # Spending over the years
@@ -91,6 +90,54 @@ def render_monthly_trend(df, sel_year):
     st.table(styled_yearly_agg_df, hide_index=True)
 
     st.divider()
+
+############
+
+    st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
+
+    # Base chart using the filtered chart_data
+    base = alt.Chart(chart_data).encode(
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month', order='ascending'), title='Month'),
+        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s'))
+    )
+
+    # Current Year Bars
+    bars = base.mark_bar(color='#4c78a8').encode(
+        tooltip=[
+            alt.Tooltip('MonthName:N', title='Month'),
+            alt.Tooltip('Amount:Q', format=',.2f', title='Current Amount'),
+            alt.Tooltip('LY_Amount:Q', format=',.2f', title='Last Year Amount')
+        ]
+    )
+
+    # Last Year Comparison (as a Tick or Line)
+    ly_comparison = base.mark_tick(
+        color='orange',
+        size=20, # Width of the tick
+        thickness=3
+    ).encode(
+        y='LY_Amount:Q'
+    )
+
+    # Labels for Current Year
+    labels = base.mark_text(dy=-10, baseline='bottom', fontWeight='bold').encode(
+        text=alt.Text('Amount:Q', format='.2s')
+    )
+
+    # Layer bars, ticks (LY), and labels
+    monthly_trend_histo = (bars + ly_comparison + labels).properties(
+        height=400,
+        width='container'
+    )
+
+    st.altair_chart(monthly_trend_histo, use_container_width=True)
+
+
+
+############
+
+
+
 
     # 2. Monthly Histogram - Curr Vs last year
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
