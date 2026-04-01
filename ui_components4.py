@@ -175,10 +175,9 @@ def render_monthly_trend(df, sel_year):
     ### pie
     category_df = category_df.sort_values(by='Amount', ascending=False).reset_index()
     chart = alt.Chart(category_df).mark_arc(innerRadius=70).encode(
-        theta=alt.Theta(field="Amount", type="quantitative"),
+        theta=alt.Theta(field="Amount", type="quantitative", sort='descending'),
         color=alt.Color(field="Category", type="nominal"),
         tooltip=['Category', 'Amount'],
-        sort='descending'
     ).properties(width=400, height=400)
 
     st.altair_chart(chart, use_container_width=True)
