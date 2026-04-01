@@ -172,7 +172,18 @@ def render_monthly_trend(df, sel_year):
     pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
 
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
+    ### pie
+    
+    chart = alt.Chart(category_df).mark_arc(innerRadius=50).encode(
+        theta=alt.Theta(field="Amount", type="quantitative"),
+        color=alt.Color(field="Category", type="nominal"),
+        tooltip=['Category', 'Amount']
+    ).properties(width=400, height=400)
 
+    st.altair_chart(chart, use_container_width=True)
+
+
+    ###
 
 
     # Create the tab objects
