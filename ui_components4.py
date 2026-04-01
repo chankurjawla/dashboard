@@ -51,8 +51,11 @@ def render_monthly_trend(df, sel_year):
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
     monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
+    monthly_data = currnlastyear_df.groupby(['MonthYear'])['Amount'].sum().reset_index()
     #monthly_data = monthly_data.drop(monthly_data[monthly_data['Amount']==0].index)
-    monthly_data = monthly_data.sort_values(['Year', 'Month'])
+    #monthly_data = monthly_data.sort_values(['Year', 'Month'])
+    monthly_data = monthly_data.sort_values(['MonthYear'])
+    monthly_data['LY_Amount'] = monthly_data['Amount'].shift(12)
     
     # Spending over the years
     yearly_agg_data =df.groupby('Year')['Amount'].sum().reset_index().sort_values(['Year'], ascending=False)
@@ -93,18 +96,16 @@ def render_monthly_trend(df, sel_year):
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
     # A. Define the base chart logic shared by both bars and labels
     base = alt.Chart(monthly_data).encode(
-        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s')),
-        xOffset='Year:N',
-        color='Year:N'
+        x=alt.X('MonthYear:N', title='Month'),
+        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s'))
     )
 
     # B. Create the bars
     bars = base.mark_bar().encode(
         tooltip=[
-            alt.Tooltip('Year:N'),
-            alt.Tooltip('MonthName:N'),
-            alt.Tooltip('Amount:Q', format='.2f')
+            alt.Tooltip('MonthYear:N'),
+            alt.Tooltip('Amount:Q', format='.2f'),
+            alt.Tooltip('LY_Amount:Q', format='.2f')
         ]
     )
 
