@@ -81,9 +81,9 @@ def render_monthly_trend(df, sel_year):
     
     st.subheader(f"Spendings over the years:")
     
-    st.dataframe(styled_yearly_agg_df, width='stretch', hide_index=True)
+    #st.dataframe(styled_yearly_agg_df, width='stretch', hide_index=True)
     st.table(styled_yearly_agg_df)
-
+    
     st.divider()
 
     # 2. Monthly Histogram - Curr Vs last year
