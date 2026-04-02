@@ -122,7 +122,7 @@ def render_monthly_trend(df, sel_year):
         height=400,
         width='container'
     )
-    st.altair_chart(monthly_trend_histo, use_container_width=True)
+    st.altair_chart(monthly_trend_histo, width='stretch')
     st.divider()
 
     # 2. Category split histogram for Curr year
