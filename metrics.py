@@ -2,10 +2,9 @@ import pandas as pd
 import streamlit as st
 from datetime import datetime
 
-current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-current_month_str = current_month.strftime('%Y-%m-%d')
-
 def calculate_yoy_metrics(df, selected_year):
+    current_month = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+    current_month_str = current_month.strftime('%Y-%m-%d')
     curr_df = df[df['Year'] == selected_year]
     prev_df = df[df['Year'] == (selected_year - 1)]
     
