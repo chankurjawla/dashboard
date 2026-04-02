@@ -108,7 +108,7 @@ def render_monthly_trend(df, sel_year):
     )
 
     # C. Create concise labels (using SI prefix 's' for 'k', 'M', etc.)
-    labels = base.mark_text(
+    labels = bars.mark_text(
         dy=-10,       # Shift text above the bar
         baseline='bottom',
         fontSize=10,
