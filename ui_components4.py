@@ -92,14 +92,14 @@ def render_monthly_trend(df, sel_year):
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
     # A. Define the base chart logic shared by both bars and labels
     base = alt.Chart(currnlastyear_df).encode(
-        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
-        y=alt.Y('sum(Amount):Q', title='Total Spending', axis=alt.Axis(format='.2s')),
         xOffset='Year:N',
         color='Year:N'
     )
 
     # B. Create the bars
     bars = base.mark_bar().encode(
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
+        y=alt.Y('sum(Amount):Q', title='Total Spending', axis=alt.Axis(format='.2s')),
         tooltip=[
             alt.Tooltip('Year:N'),
             alt.Tooltip('MonthName:N'),
