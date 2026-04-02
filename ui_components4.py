@@ -177,9 +177,11 @@ def render_monthly_trend(df, sel_year):
     chart = alt.Chart(category_df).mark_arc(innerRadius=70).encode(
         theta=alt.Theta(field="Amount", type="quantitative", sort='descending'),
         color=alt.Color(field="Category", type="nominal"),
-        order=alt.Order(field='Amount', sort='descending')
-        tooltip=['Category', 'Amount'],
-    ).properties(width=400, height=400)
+        order=alt.Order(field='Amount', sort='descending'),
+        tooltip=['Category', 'Amount']
+        ).properties(
+            width=400, height=400
+            )
 
     st.altair_chart(chart, use_container_width=True)
 
