@@ -50,8 +50,6 @@ def render_monthly_trend(df, sel_year):
     # 1. Prepare data
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
-    monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
-    monthly_data = monthly_data.sort_values(['Year', 'Month'])
     
     # Spending over the years
     yearly_agg_data =df.groupby('Year')['Amount'].sum().reset_index().sort_values(['Year'], ascending=False)
@@ -68,7 +66,7 @@ def render_monthly_trend(df, sel_year):
         'YoY Change': YoY_Change
     })
     
-    yearly_agg_data = yearly_agg_data.set_index('Year')
+    #yearly_agg_data = yearly_agg_data.set_index('Year')
     
     def style_yoy(val):
         color = '#d4edda' if val < 0 else '#f8d7da' # Light Green / Light Red
@@ -84,37 +82,37 @@ def render_monthly_trend(df, sel_year):
     st.subheader(f"Spendings over the years:")
     
     #st.dataframe(styled_yearly_agg_df, width='stretch', hide_index=True)
-    st.table(styled_yearly_agg_df)
+    st.table(styled_yearly_agg_df, hide_index=True)
 
     st.divider()
 
     # 2. Monthly Histogram - Curr Vs last year
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
     # A. Define the base chart logic shared by both bars and labels
-    base = alt.Chart(monthly_data).encode(
-        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s')),
-        xOffset='Year:N',
-        color='Year:N'
+    base = alt.Chart(currnlastyear_df).encode(
+        alt.Color('Year:N'),
+        xOffset = 'Year:N'
     )
 
     # B. Create the bars
     bars = base.mark_bar().encode(
+        x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
+        y=alt.Y('sum(Amount):Q', title='Total Spending', axis=alt.Axis(format='.2s')),
         tooltip=[
             alt.Tooltip('Year:N'),
             alt.Tooltip('MonthName:N'),
-            alt.Tooltip('Amount:Q', format='.2f')
+            alt.Tooltip('sum(Amount):Q', format='.2f')
         ]
     )
 
     # C. Create concise labels (using SI prefix 's' for 'k', 'M', etc.)
-    labels = base.mark_text(
+    labels = bars.mark_text(
         dy=-10,       # Shift text above the bar
         baseline='bottom',
         fontSize=10,
         fontWeight='bold'
     ).encode(
-        text=alt.Text('Amount:Q', format='.2s') # '$.2s' makes it concise (e.g., $1.5k)
+        text=alt.Text('sum(Amount):Q', format='.2s') # '$.2s' makes it concise (e.g., $1.5k)
     )
 
     # D. Layer them together
@@ -122,7 +120,7 @@ def render_monthly_trend(df, sel_year):
         height=400,
         width='container'
     )
-    st.altair_chart(monthly_trend_histo, use_container_width=True)
+    st.altair_chart(monthly_trend_histo, width='stretch')
     st.divider()
 
     # 2. Category split histogram for Curr year
@@ -172,9 +170,6 @@ def render_monthly_trend(df, sel_year):
     pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
 
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
-
-
-
     # Create the tab objects
     tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
     with tab1:
