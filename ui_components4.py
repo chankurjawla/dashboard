@@ -50,8 +50,8 @@ def render_monthly_trend(df, sel_year):
     # 1. Prepare data
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
-    monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
-    monthly_data = monthly_data.sort_values(['Year', 'Month'])
+    #monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
+    #monthly_data = monthly_data.sort_values(['Year', 'Month'])
     
     # Spending over the years
     yearly_agg_data =df.groupby('Year')['Amount'].sum().reset_index().sort_values(['Year'], ascending=False)
@@ -91,9 +91,9 @@ def render_monthly_trend(df, sel_year):
     # 2. Monthly Histogram - Curr Vs last year
     st.subheader(f'Monthly Spending Trend: {sel_year} vs {sel_year-1}')
     # A. Define the base chart logic shared by both bars and labels
-    base = alt.Chart(monthly_data).encode(
+    base = alt.Chart(currnlastyear_df).encode(
         x=alt.X('MonthName:N', sort=alt.EncodingSortField(field='Month'), title='Month'),
-        y=alt.Y('Amount:Q', title='Total Spending', axis=alt.Axis(format='.2s')),
+        y=alt.Y('sum(Amount):Q', title='Total Spending', axis=alt.Axis(format='.2s')),
         xOffset='Year:N',
         color='Year:N'
     )
