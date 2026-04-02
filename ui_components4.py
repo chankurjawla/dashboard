@@ -50,8 +50,6 @@ def render_monthly_trend(df, sel_year):
     # 1. Prepare data
     currnlastyear_df = df[df['Year'].isin([sel_year, sel_year-1])].copy()
     curryear_df = df[df['Year'].isin([sel_year])].copy()
-    #monthly_data = currnlastyear_df.groupby(['Year', 'MonthName', 'Month'])['Amount'].sum().reset_index()
-    #monthly_data = monthly_data.sort_values(['Year', 'Month'])
     
     # Spending over the years
     yearly_agg_data =df.groupby('Year')['Amount'].sum().reset_index().sort_values(['Year'], ascending=False)
@@ -172,23 +170,6 @@ def render_monthly_trend(df, sel_year):
     pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
 
     styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
-    ### pie
-    category_df = category_df.sort_values(by='Amount', ascending=False).reset_index()
-    chart = alt.Chart(category_df).mark_arc(innerRadius=70).encode(
-        theta=alt.Theta(field="Amount", type="quantitative", sort='descending'),
-        color=alt.Color(field="Category", type="nominal"),
-        order=alt.Order(field='Amount', sort='descending'),
-        tooltip=['Category', 'Amount']
-        ).properties(
-            width=400, height=400
-            )
-
-    st.altair_chart(chart, use_container_width=True)
-
-
-    ###
-
-
     # Create the tab objects
     tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
     with tab1:
