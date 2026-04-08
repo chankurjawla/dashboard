@@ -4,7 +4,7 @@ import yfinance as yf
 def totalequityvalue():
     equity_csv_file = "equity_data.csv"
     equity_df = pd.read_csv(equity_csv_file)
-    equity_df['Security Symbol'] =equity_df['Security Symbol'].apply(lambda x: f"{x}.NS")
+    equity_df['Security Symbol'] =equity_df['Security Symbol'].apply(lambda x: x if x.endswith('.BO') else f"{x}.NS")
     begin_date = equity_df['Date'].min()
 
     equity_df['Date'] = pd.to_datetime(equity_df['Date'], format='%m-%d-%Y')
