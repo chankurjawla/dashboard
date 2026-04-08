@@ -3,16 +3,23 @@ import altair as alt
 import pandas as pd
 import os
 from fin_metrics import populatemetrics
-from totalequityvalue import totalequityvalue
+#from totalequityvalue import totalequityvalue
 import sectoral_indices as si
-from epf_ankur import epf_calculation_ankur
-from epf_gulu import epf_calculation_gulu
+#from epf_ankur import epf_calculation_ankur
+#from epf_gulu import epf_calculation_gulu
 import epfanalysis
 
 st.sidebar.markdown("Investment Analytics")
 if st.sidebar.button('NPS ⚙️'):
     with st.spinner('refreshing nps data'):
         st.rerun()
+st.sidebar.divider()
+    
+# 3. System Controls
+st.sidebar.subheader("System Controls")
+if st.sidebar.button('Sync Data & Refresh', use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
 
 # --- 1. Metrics
 populatemetrics()
@@ -22,6 +29,7 @@ st.subheader("Equity Analysis")
 
 # Button to trigger the heavy work
 if st.button('Refresh Equity Data'):
+    from totalequityvalue import totalequityvalue
     with st.spinner("Calculating Equity Values..."):
         totalequityvalue().to_csv('total-equity-value.csv', index=False)
         st.rerun()
