@@ -22,7 +22,7 @@ def render_sidebar(df):
     
     included_cats = st.sidebar.multiselect('Include Categories', options=all_cats, default=default_cat_inclusions)
     
-    df_filtered = df_filtered1[df_filtered1['Category'].isin(included_cats)].copy()
+    df_filtered = df[df['Category'].isin(included_cats)].copy()
     
     # 2. Year Filter
     all_years = sorted(df_filtered['Year'].unique().tolist(), reverse=True)
