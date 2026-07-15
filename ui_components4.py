@@ -144,7 +144,7 @@ def render_monthly_trend(df, sel_year):
 
     # 3. Fixed Vs Variable
     filtered_cats = curryear_df['Category'].unique().tolist()
-    fixed_cats_words = ["rent","education","househelp"]
+    fixed_cat_words = ["rent","education","househelp"]
     fixed_cats = [
         cat for cat in filtered_cats
         if any(word in cat.lower() for word in fixed_cat_words)
