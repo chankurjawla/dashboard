@@ -7,27 +7,23 @@ def render_sidebar(df):
     st.sidebar.header('Dashboard Filters')
     
     # 1. Category Filter
-    unique_cats = df['Category'].unique().tolist()
-    all_cats = sorted([str(cat) for cat in unique_cats])
-    default_exclusions = [
+    all_cats = df['Category'].unique().tolist()
+
+    # 1.1 Define keywords to filter out
+    excluded_cats = ["investment", "not applicable", "income", "loan"]
+
+    # 1.2 Build exclusions
+    default_cat_exclusions = [
         cat for cat in all_cats 
-        if "investment" in cat.lower() or 
-        "not applicable" in cat.lower() or
-        "income" in cat.lower() or
-        "loan" in cat.lower()
-        ]
-    excluded = st.sidebar.multiselect('Exclude Categories', options=all_cats, default=default_exclusions)
-    df_filtered1 = df[~df['Category'].isin(excluded)].copy()
+        if any(word in cat.lower() for excluded_cats)
+    ]
+
+    # 1.3 Inclusions are just the categories NOT in exclusions
+    default_cat_inclusions = [cat for cat in all_cats if cat not in default_cat_exclusions]   
     
-    # 1.1 Category filter
-    default_inclusions = [
-        cat for cat in all_cats
-        if "investment" not in cat.lower() or
-        "not applicable" not in cat.lower() or
-        "loan" not in cat.lower()
-        ]
-    included = st.sidebar.multiselect('Include Categories', options=all_cats, default=default_inclusions)
-    df_filtered = df_filtered1[df_filtered1['Category'].isin(included)].copy()
+    included_cats = st.sidebar.multiselect('Include Categories', options=all_cats, default=default_cat_inclusions)
+    
+    df_filtered = df_filtered1[df_filtered1['Category'].isin(included_cats)].copy()
     
     # 2. Year Filter
     all_years = sorted(df_filtered['Year'].unique().tolist(), reverse=True)
@@ -42,7 +38,7 @@ def render_sidebar(df):
         st.cache_data.clear()
         st.rerun()
         
-    return df_filtered, sel_year
+    return df_filtered, current_year
 
 def render_monthly_trend(df, sel_year):
     """Renders the discrete monthly line chart comparing current vs last year."""
@@ -81,7 +77,6 @@ def render_monthly_trend(df, sel_year):
     
     st.subheader(f"Spendings over the years:")
     
-    #st.dataframe(styled_yearly_agg_df, width='stretch', hide_index=True)
     st.table(styled_yearly_agg_df)
     
     st.divider()
@@ -138,28 +133,27 @@ def render_monthly_trend(df, sel_year):
     st.subheader("Spending by Category : YTD")
     
     # Category Heatmap for Curr year
-    pivot_1 = curryear_df.pivot_table(
+    CatHeatMap_pivot = curryear_df.pivot_table(
         index='Category', columns='MonthName', values='Amount', 
         aggfunc='sum', observed=True
     )
     #drop columns with all values as zero
-    pivot_1 = pivot_1.loc[:, (pivot_1 != 0).any(axis=0)]
+    CatHeatMap_pivot = CatHeatMap_pivot.loc[:, (CatHeatMap_pivot != 0).any(axis=0)]
 
-    styled_df = pivot_1.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
+    styled_CatHeatMap = CatHeatMap_pivot.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None) 
 
 
     # 3. Fixed Vs Variable
-    all_cats = curryear_df['Category'].unique().tolist()
-    variabletypelist = [
-        cat for cat in all_cats
-        if "rent" not in cat.lower() and
-        "househelp" not in cat.lower() and
-        "child education" not in cat.lower()
+    filtered_cats = curryear_df['Category'].unique().tolist()
+    fixed_cats = ["rent","education","househelp"]
+    variable_cats = [
+        cat for cat in filtered_cats
+        if cat not in fixed_cats
         ]
-    FixedVariable_df = curryear_df.copy()
-    FixedVariable_df.loc[FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Variable"
-    FixedVariable_df.loc[~FixedVariable_df['Category'].isin(variabletypelist),'expensetype'] = "Fixed"
-    pivot_2 = FixedVariable_df.pivot_table(
+    FixedAndVariable_df = curryear_df.copy()
+    FixedAndVariable_df.loc[FixedAndVariable_df['Category'].isin(variable_cats),'expensetype'] = "Variable"
+    FixedAndVariable_df.loc[~FixedAndVariable_df['Category'].isin(variable_cats),'expensetype'] = "Fixed"
+    FixedAndVariable_pivot = FixedAndVariable_df.pivot_table(
         index = "MonthName",
         columns = "expensetype",
         values="Amount",
@@ -167,21 +161,85 @@ def render_monthly_trend(df, sel_year):
         observed=True
         )
     # Drops columns where every single value is 0
-    pivot_2 = pivot_2.loc[:, (pivot_2 != 0).any(axis=0)]
+    FixedAndVariable_pivot = FixedAndVariable_pivot.loc[:, (FixedAndVariable_pivot != 0).any(axis=0)]
 
-    styled_df2 = pivot_2.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
+    styled_FixedAndVariable_pivot = FixedAndVariable_pivot.style.format("₹{:,.0f}").background_gradient(cmap="Reds", axis=None)
+    
+    
+    # 4. Daily Expense Trend for current month (Variable expenses only)
+    VariableTrend_df = FixedAndVariable_df[FixedAndVariable_df['expensetype']=='Variable'].copy()
+    
+    # 4.1 Ensure Date is a datetime object and extract Day
+    VariableTrend_df['Date'] = pd.to_datetime(VariableTrend_df['Date'])
+    VariableTrend_df['Day'] = VariableTrend_df['Date'].dt.day
+    
+    # 4.2 Get the latest available month from this year's data dynamically
+    # (Matches the logic we used to handle empty states safely)
+    available_months = sorted(
+        VariableTrend_df['MonthName'].unique().tolist(), 
+        key=lambda x: pd.to_datetime(x, format='%b').month
+    )
+    currentmonth = available_months[-1] if available_months else None
+
+    if currentmonth:
+        # 3. Filter down to just the current month
+        daily_df = VariableTrend_df[VariableTrend_df['MonthName'] == currentmonth].copy()
+        
+        # 4. Group by Day to get total spent each day
+        daily_agg = daily_df.groupby('Day')['Amount'].sum().reset_index()
+        
+        # 5. Optional but highly recommended: Calculate a Cumulative/Running Total 
+        # so you can see your spending climb throughout the month
+        daily_agg['Cumulative Amount'] = daily_agg['Amount'].cumsum()
+
+        # 6. Build the Altair Line Chart
+        daily_trend_chart = alt.Chart(daily_agg).mark_line(
+            point=True,  # Adds dots on each day's data point
+            color='#d63031' # Sleek red line
+        ).encode(
+            x=alt.X('Day:Q', title='Day of Month', scale=alt.Scale(domain=[1, 31])),
+            y=alt.Y('Cumulative Amount:Q', title='Total Spent (Cumulative)'),
+            tooltip=[
+                alt.Tooltip('Day:Q', title='Day'),
+                alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f'),
+                alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
+            ]
+        ).properties(
+            height=350,
+            title=f"Variable Spending Accumulation — {currentmonth} {sel_year}"
+        )
+    else:
+        daily_trend_chart = None
+    
+    
+    
+    
+    
+    
+    
     # Create the tab objects
-    tab1, tab2, tab3, tab4= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help"])
+    tab1, tab2, tab3, tab4, tab5= st.tabs(["Graph", "Detailed","Fixed&Variable","House Help","Daily Trend"])
     with tab1:
         #st.header("Results")
         st.altair_chart(category_histo, width='stretch', theme='streamlit')
     with tab2:
         #st.header("Raw Data")
-        st.dataframe(styled_df, width="stretch",height=650)
+        st.dataframe(styled_CatHeatMap, width="stretch",height=650)
     with tab3:
         #st.header("Raw Data")
-        st.dataframe(styled_df2, width="stretch",height=650) 
+        st.dataframe(styled_FixedAndVariable_pivot, width="stretch",height=650) 
     with tab4:           
-        # --- 9. Equity Analysis
+        # Househelp table
         from househelp import househelp_ui
         househelp_ui(df)
+    with tab5:
+        # Daily Expense trend
+        if daily_trend_chart is not None:
+            st.subheader(f"Daily Trajectory for {currentmonth}")
+            st.altair_chart(daily_trend_chart, use_container_width=True)
+            
+            # Show a small metric summary below it
+            total_var_spend = daily_agg['Amount'].sum()
+            st.metric(label=f"Total Variable Spend in {currentmonth}", value=f"₹{total_var_spend:,.2f}")
+        else:
+            st.info("No variable expense data available for the current month loop.")

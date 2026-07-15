@@ -27,15 +27,15 @@ if df_raw is None:
 
 # --- 2. Render Sidebar ---
 # Returns filtered data, year, and the layout mode (Side-by-Side or Stacked)
-df_filtered, sel_year = ui.render_sidebar(df_raw)
+df_filtered, current_year = ui.render_sidebar(df_raw)
 
 # --- 3. Header & Metrics ---
-populatemetrics(df_filtered,sel_year)
+populatemetrics(df_filtered,current_year)
 
 st.divider()
 
 # --- 4. Monthly Trend ---
-ui.render_monthly_trend(df_filtered, sel_year)
+ui.render_monthly_trend(df_filtered, current_year)
 
 # --- 4.1 Cash Flow
 from cashflow import cash_flow
