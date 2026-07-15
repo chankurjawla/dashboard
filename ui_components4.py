@@ -201,10 +201,10 @@ def render_monthly_trend(df, sel_year):
             point=True,  # Adds dots on each day's data point
             color='#d63031' # Sleek red line
         ).encode(
-            x=alt.X('Day:Q', title='Day of Month', scale=alt.Scale(domain=[1, 31])),
+            x=alt.X('Day:O', title='Day of Month', scale=alt.Scale(domain=[1, 31])),
             y=alt.Y('Cumulative Amount:Q', title='Total Spent (Cumulative)'),
             tooltip=[
-                alt.Tooltip('Day:Q', title='Day'),
+                alt.Tooltip('Day:O', title='Day'),
                 alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f'),
                 alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
             ]
