@@ -173,12 +173,12 @@ def render_monthly_trend(df, sel_year):
     # 4. Daily Expense Trend for current month (Variable expenses only)
     VariableTrend_df = FixedAndVariable_df[FixedAndVariable_df['expensetype']=='Variable'].copy()
     
-    # 4.1 Ensure Date is a datetime object and extract Day
+    # 4.1 Force standard datetime conversion
     VariableTrend_df['Date'] = pd.to_datetime(VariableTrend_df['Date'])
-    VariableTrend_df['Day'] = VariableTrend_df['Date'].dt.day
     
-    # 4.2 Get the latest available month from this year's data dynamically
-    # (Matches the logic we used to handle empty states safely)
+    # 4.2 Explicitly force Day as a clean, standard integer column
+    VariableTrend_df['Day'] = VariableTrend_df['Date'].dt.day.astype(int)
+    
     available_months = sorted(
         VariableTrend_df['MonthName'].unique().tolist(), 
         key=lambda x: pd.to_datetime(x, format='%b').month
@@ -189,22 +189,24 @@ def render_monthly_trend(df, sel_year):
         # 3. Filter down to just the current month
         daily_df = VariableTrend_df[VariableTrend_df['MonthName'] == currentmonth].copy()
         
-        # 4. Group by Day to get total spent each day
+        # 4. Group, sort, and reset index cleanly
         daily_agg = daily_df.groupby('Day')['Amount'].sum().reset_index()
+        daily_agg = daily_agg.sort_values('Day')
         
-        # 5. Optional but highly recommended: Calculate a Cumulative/Running Total 
-        # so you can see your spending climb throughout the month
-        daily_agg['Cumulative Amount'] = daily_agg['Amount'].cumsum()
+        # 5. Calculate cumulative sum and force float type for safety
+        daily_agg['Cumulative Amount'] = daily_agg['Amount'].cumsum().astype(float)
+        daily_agg['Amount'] = daily_agg['Amount'].astype(float)
 
-        # 6. Build the Altair Line Chart
+        # 6. Build a dead-simple chart structure using Quantitative scale WITHOUT hardcoded domains
         daily_trend_chart = alt.Chart(daily_agg).mark_line(
-            point=True,  # Adds dots on each day's data point
-            color='#d63031' # Sleek red line
+            point=True,       # Draws line AND points explicitly
+            color='#d63031',
+            strokeWidth=3
         ).encode(
-            x=alt.X('Day:O', title='Day of Month', scale=alt.Scale(domain=[1, 31])),
+            x=alt.X('Day:Q', title='Day of Month', axis=alt.Axis(tickMinStep=1, format='d')),
             y=alt.Y('Cumulative Amount:Q', title='Total Spent (Cumulative)'),
             tooltip=[
-                alt.Tooltip('Day:O', title='Day'),
+                alt.Tooltip('Day:Q', title='Day'),
                 alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f'),
                 alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
             ]
@@ -214,9 +216,6 @@ def render_monthly_trend(df, sel_year):
         )
     else:
         daily_trend_chart = None
-    
-    
-    
     
     
     
