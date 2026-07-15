@@ -15,8 +15,7 @@ def render_sidebar(df):
     # 1.2 Build exclusions
     default_cat_exclusions = [
         cat for cat in all_cats 
-        if any(word in cat.lower() for excluded_cats)
-    ]
+        if any(word in cat.lower() for word in excluded_cats)]
 
     # 1.3 Inclusions are just the categories NOT in exclusions
     default_cat_inclusions = [cat for cat in all_cats if cat not in default_cat_exclusions]   
