@@ -235,8 +235,8 @@ def render_monthly_trend(df, sel_year):
         # Daily Expense trend
         if daily_trend_chart is not None:
             st.subheader(f"Daily Trajectory for {currentmonth}")
-            st.altair_chart(daily_trend_chart)
-            
+            #st.altair_chart(daily_trend_chart)
+            st.dataframe(daily_agg)
             # Show a small metric summary below it
             total_var_spend = daily_agg['Amount'].sum()
             st.metric(label=f"Total Variable Spend in {currentmonth}", value=f"₹{total_var_spend:,.2f}")
