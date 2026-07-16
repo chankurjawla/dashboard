@@ -198,17 +198,13 @@ def render_monthly_trend(df, sel_year):
         daily_agg['Amount'] = daily_agg['Amount'].astype(float)
 
         # 6. Build a dead-simple chart structure using Quantitative scale WITHOUT hardcoded domains
-        daily_trend_chart = alt.Chart(daily_agg).mark_line(
-            point=True,       # Draws line AND points explicitly
-            color='#d63031',
-            strokeWidth=3
-        ).encode(
+        daily_trend_chart = alt.Chart(daily_agg).mark_line().encode(
             x=alt.X('Day:Q', title='Day of Month', axis=alt.Axis(tickMinStep=1, format='d')),
             y=alt.Y('Cumulative Amount:Q', title='Total Spent (Cumulative)'),
             tooltip=[
                 alt.Tooltip('Day:Q', title='Day'),
-                alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f'),
-                alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
+                alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f')
+                #alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
             ]
         ).properties(
             height=350,
@@ -239,7 +235,7 @@ def render_monthly_trend(df, sel_year):
         # Daily Expense trend
         if daily_trend_chart is not None:
             st.subheader(f"Daily Trajectory for {currentmonth}")
-            st.altair_chart(daily_trend_chart, use_container_width=True)
+            st.altair_chart(daily_trend_chart)
             
             # Show a small metric summary below it
             total_var_spend = daily_agg['Amount'].sum()
