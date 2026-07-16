@@ -200,7 +200,7 @@ def render_monthly_trend(df, sel_year):
         # 6. Build a dead-simple chart structure using Quantitative scale WITHOUT hardcoded domains
         daily_trend_chart = alt.Chart(daily_agg).mark_bar().encode(
             x=alt.X('Day:O', title='Day of Month'),
-            y=alt.Y('Cumulative Amount:Q', title='Daily Spend'),
+            y=alt.Y('Amount:Q', title='Daily Spend'),
             tooltip=[
                 alt.Tooltip('Day:O', title='Day'),
                 alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f')
