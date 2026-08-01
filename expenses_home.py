@@ -44,16 +44,14 @@ home_related_category = [
 # A.4. Filter the DataFrame using .isin()
 df_raw = df_all_cats[df_all_cats["Category"].isin(home_related_category)].copy()
 
-# --- 2. Render Sidebar ---
-# Safely capture return values
-sidebar_output = ui.render_sidebar(df_raw)
-#df_filtered = sidebar_output[0]
-current_year = sidebar_output[1]
+all_years = sorted(df_raw['Year'].unique().tolist(), reverse=True)
+current_year = max(all_years)
 
-# --- 3. Header & Metrics ---
+# --- 2. Header & Metrics ---
 populatemetrics(df_raw, current_year)
 
 st.divider()
 
-# --- 4. Monthly Trend ---
-ui.render_monthly_trend(df_raw, 2026)
+df_monthly = df_raw["MonthYear"].groupby(["MonthYear","Category"])["Amount"].sum().reset_index()
+st.subheader("Monthly Expenses")
+st.line_chart(df_monthly, x='MonthYear', y='Amount')

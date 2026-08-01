@@ -10,7 +10,7 @@ def render_sidebar(df):
     all_cats = df['Category'].unique().tolist()
 
     # 1.1 Define keywords to filter out
-    excluded_cats = ["investment", "not applicable", "income", "loan"]
+    excluded_cats = ["investment", "not applicable", "income", "loan", "home"]
 
     # 1.2 Build exclusions
     default_cat_exclusions = [
