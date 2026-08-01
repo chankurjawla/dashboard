@@ -46,7 +46,7 @@ df_raw = df_all_cats[df_all_cats["Category"].isin(home_related_category)].copy()
 
 # --- 2. Render Sidebar ---
 # Safely capture return values
-#sidebar_output = ui.render_sidebar(df_raw)
+sidebar_output = ui.render_sidebar(df_raw)
 #df_filtered = sidebar_output[0]
 current_year = sidebar_output[1]
 
