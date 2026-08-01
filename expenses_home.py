@@ -48,12 +48,12 @@ df_raw = df_all_cats[df_all_cats["Category"].isin(home_related_category)].copy()
 # Safely capture return values
 sidebar_output = ui.render_sidebar(df_raw)
 df_filtered = sidebar_output[0]
-current_year = sidebar_output[1]
+#current_year = sidebar_output[1]
 
 # --- 3. Header & Metrics ---
-populatemetrics(df_filtered, current_year)
+populatemetrics(df_filtered, 2026)
 
 st.divider()
 
 # --- 4. Monthly Trend ---
-ui.render_monthly_trend(df_filtered, current_year)
+ui.render_monthly_trend(df_filtered, 2026)
