@@ -13,6 +13,7 @@ import altair as alt
 from processor import clean_data
 from metrics import populatemetrics
 import ui_components4 as ui
+from chart_factory import render_dynamic_chart
 
 # NOTE: Remove st.set_page_config from here! It must live inside main app.py
 
@@ -55,3 +56,27 @@ st.divider()
 df_monthly = df_raw["MonthYear"].groupby(["MonthYear","Category"])["Amount"].sum().reset_index()
 st.subheader("Monthly Expenses")
 st.line_chart(df_monthly, x='MonthYear', y='Amount')
+
+st.divider()
+
+# Example 1: Multi-line chart grouped by 'Category'
+render_dynamic_chart(
+    df=df_raw,
+    x_col='MonthYear',
+    y_col='Amount',
+    chart_type='line',
+    group_col='Category',
+    title='Monthly Spend by Category (Line Chart)'
+)
+
+st.divider()
+
+# Example 2: Grouped side-by-side bar chart grouped by 'Year'
+render_dynamic_chart(
+    df=df,
+    x_col='Month',
+    y_col='Amount',
+    chart_type='bar',
+    group_col='Category',
+    title='Year-over-Year Spend Comparison (Bar Chart)'
+)
