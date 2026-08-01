@@ -56,4 +56,4 @@ populatemetrics(df_raw, 2026)
 st.divider()
 
 # --- 4. Monthly Trend ---
-ui.render_monthly_trend(df_filtered, 2026)
+ui.render_monthly_trend(df_raw, 2026)
