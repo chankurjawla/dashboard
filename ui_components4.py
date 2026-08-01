@@ -197,23 +197,8 @@ def render_monthly_trend(df, sel_year):
         # 5. Calculate cumulative sum and force float type for safety
         daily_agg['Cumulative Amount'] = daily_agg['Amount'].cumsum().astype(float)
         daily_agg['Amount'] = daily_agg['Amount'].astype(float)
-
-        # 6. Build a dead-simple chart structure using Quantitative scale WITHOUT hardcoded domains
-        #daily_trend_chart = alt.Chart(daily_agg).mark_bar().encode(
-        #    x=alt.X('Day:O', title='Day of Month'),
-        #    y=alt.Y('Amount:Q', title='Daily Spend'),
-        #    tooltip=[
-        #        alt.Tooltip('Day:O', title='Day'),
-        #        alt.Tooltip('Amount:Q', title='Daily Spend', format='₹,.2f')
-        #        #alt.Tooltip('Cumulative Amount:Q', title='Total So Far', format='₹,.2f')
-        #    ]
-        #).properties(
-        #    height=350,
-        #    title=f"Variable Spending Accumulation — {currentmonth} {sel_year}"
-        #)
-        daily_trend_chart = st.line_chart(daily_agg, x='Day', y='Amount')
     else:
-        daily_trend_chart = None
+        daily_agg = None
     
     
     
@@ -235,12 +220,4 @@ def render_monthly_trend(df, sel_year):
         househelp_ui(df)
     with tab5:
         # Daily Expense trend
-        if daily_trend_chart is not None:
-            st.subheader(f"Daily Trajectory for {currentmonth}")
-            st.altair_chart(daily_trend_chart)
-            #st.dataframe(daily_agg)
-            # Show a small metric summary below it
-            total_var_spend = daily_agg['Amount'].sum()
-            st.metric(label=f"Total Variable Spend in {currentmonth}", value=f"₹{total_var_spend:,.2f}")
-        else:
-            st.info("No variable expense data available for the current month loop.")
+        st.line_chart(daily_agg, x='Day', y='Amount')
