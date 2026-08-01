@@ -46,12 +46,12 @@ df_raw = df_all_cats[df_all_cats["Category"].isin(home_related_category)].copy()
 
 # --- 2. Render Sidebar ---
 # Safely capture return values
-sidebar_output = ui.render_sidebar(df_raw)
-df_filtered = sidebar_output[0]
+#sidebar_output = ui.render_sidebar(df_raw)
+#df_filtered = sidebar_output[0]
 #current_year = sidebar_output[1]
 
 # --- 3. Header & Metrics ---
-populatemetrics(df_filtered, 2026)
+populatemetrics(df_raw, 2026)
 
 st.divider()
 
