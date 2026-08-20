@@ -13,7 +13,6 @@ import altair as alt
 from processor import clean_data
 from metrics import populatemetrics
 import ui_components4 as ui
-from chart_factory import render_dynamic_chart
 from render_chart import render_chart
 
 # NOTE: Remove st.set_page_config from here! It must live inside main app.py
@@ -60,8 +59,6 @@ current_year = max(all_years)
 
 # --- 2. Header & Metrics ---
 populatemetrics(df_raw, current_year)
-
-st.divider()
 
 df_monthly = (
     df_raw.groupby("MonthYear", as_index=False)["Amount"]
