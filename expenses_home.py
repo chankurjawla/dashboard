@@ -71,54 +71,25 @@ df_monthly = (
     .sort_values("MonthYear")
     .reset_index(drop=True)
 )
+st.divider()
+# Line Chart
+render_chart(
+    df=df_raw,
+    x_col="Category",
+    y_col="Amount",
+    chart_title="Spending By Category",
+    chart_type="bar",
+    sort_col = "Amount"
+)
+
+st.divider()
 
 # Grouped Bar Chart (Year-over-Year)
 render_chart(
     df=df_monthly,
-    x_col="MonthYear",
+    x_col="MonthYear:T",
     y_col="Amount",
     chart_title=f"Monthly Spending Trend",
     chart_type="bar",
 )
 
-# Line Chart
-render_chart(
-    df=df_monthly,
-    x_col="MonthYear",
-    y_col="Amount",
-    chart_title="Spending Trajectory",
-    chart_type="line"
-)
-
-
-
-render_dynamic_chart(
-    df=df_monthly,
-    x_col='MonthYear',
-    y_col='Amount',
-    chart_type='line',
-    title='Spending over Months'
-)
-st.divider()
-
-# Example 1: Multi-line chart grouped by 'Category'
-df_category = df_raw.groupby(["Category"])["Amount"].sum().reset_index()
-render_dynamic_chart(
-    df=df_category,
-    x_col='Category',
-    y_col='Amount',
-    chart_type='bar',
-    title='Spending By Category'
-)
-
-st.divider()
-
-# Example 2: Grouped side-by-side bar chart grouped by 'Year'
-render_dynamic_chart(
-    df=df_raw,
-    x_col='Year',
-    y_col='Amount',
-    chart_type='bar',
-    group_col='Category',
-    title='Year-over-Year Spend Comparison (Bar Chart)'
-)
