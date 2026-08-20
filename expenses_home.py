@@ -84,14 +84,13 @@ with tab1:
     chart_title="Spending By Category",
     chart_type="bar",
     sort_col = "Amount",
-    color_col = "Category"
     )
 with tab2:
     render_chart(
     df=df_monthly,
     x_col="MonthYear",
     y_col="Amount",
-    chart_title=f"Monthly Spending Trend",
+    chart_title="Monthly Trend",
     chart_type="line",
     )
 
