@@ -77,7 +77,7 @@ render_chart(
     df=df_monthly,
     x_col="MonthYear",
     y_col="Amount",
-    chart_title=f"Monthly Spending Trend: {sel_year} vs {sel_year-1}",
+    chart_title=f"Monthly Spending Trend",
     chart_type="bar",
 )
 
