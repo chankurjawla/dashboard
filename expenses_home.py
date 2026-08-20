@@ -63,9 +63,15 @@ populatemetrics(df_raw, current_year)
 st.divider()
 
 df_monthly = df_raw.groupby(["MonthYear"])["Amount"].sum().reset_index()
-st.subheader("Monthly Expenses")
-st.line_chart(df_monthly, x='MonthYear', y='Amount')
-
+#st.subheader("Monthly Expenses")
+#st.line_chart(df_monthly, x='MonthYear', y='Amount')
+render_dynamic_chart(
+    df=df_monthly,
+    x_col='MonthYear',
+    y_col='Amount',
+    chart_type='line',
+    title='Spending over Months'
+)
 st.divider()
 
 # Example 1: Multi-line chart grouped by 'Category'
