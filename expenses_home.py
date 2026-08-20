@@ -63,33 +63,38 @@ populatemetrics(df_raw, current_year)
 
 st.divider()
 
-#df_monthly = df_raw.groupby(["MonthYear"])["Amount"].sum().reset_index()
 df_monthly = (
     df_raw.groupby("MonthYear", as_index=False)["Amount"]
     .sum()
     .assign(MonthYear=lambda df: pd.to_datetime(df["MonthYear"], format="%Y/%m"))
     .sort_values("MonthYear")
+    # Convert to clean formatted string after sorting
+    .assign(MonthYear=lambda df: df["MonthYear"].dt.strftime("%b %Y"))  # e.g., 'Jan 2024'
     .reset_index(drop=True)
 )
+
 st.divider()
-# Line Chart
-render_chart(
+
+tab1, tab2= st.tabs(["By Category", "Monthly"])
+with tab1:
+    render_chart(
     df=df_raw,
     x_col="Category",
     y_col="Amount",
     chart_title="Spending By Category",
     chart_type="bar",
-    sort_col = "Amount"
-)
-
-st.divider()
-
-# Grouped Bar Chart (Year-over-Year)
-render_chart(
+    sort_col = "Amount",
+    color_col = "Category"
+    )
+with tab2:
+    render_chart(
     df=df_monthly,
-    x_col="MonthYear:T",
+    x_col="MonthYear",
     y_col="Amount",
     chart_title=f"Monthly Spending Trend",
-    chart_type="bar",
-)
+    chart_type="line",
+    )
+
+
+st.divider()
 
