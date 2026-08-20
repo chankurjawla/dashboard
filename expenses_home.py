@@ -71,7 +71,7 @@ st.divider()
 # Example 1: Multi-line chart grouped by 'Category'
 df_category = df_raw.groupby(["Category"])["Amount"].sum().reset_index()
 render_dynamic_chart(
-    df=df_raw,
+    df=df_category,
     x_col='Category',
     y_col='Amount',
     chart_type='bar',
