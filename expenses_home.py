@@ -53,7 +53,7 @@ populatemetrics(df_raw, current_year)
 
 st.divider()
 
-df_monthly = df_raw["MonthYear"].groupby(["MonthYear","Category"])["Amount"].sum().reset_index()
+df_monthly = df_raw.groupby(["MonthYear","Category"])["Amount"].sum().reset_index()
 st.subheader("Monthly Expenses")
 st.line_chart(df_monthly, x='MonthYear', y='Amount')
 
