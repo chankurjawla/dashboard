@@ -69,13 +69,13 @@ st.line_chart(df_monthly, x='MonthYear', y='Amount')
 st.divider()
 
 # Example 1: Multi-line chart grouped by 'Category'
+df_category = df_raw.groupby(["Category"])["Amount"].sum().reset_index()
 render_dynamic_chart(
-    df=df_raw,
-    x_col='MonthYear',
+    df=df_category,
+    x_col='Category',
     y_col='Amount',
-    chart_type='line',
-    group_col='Category',
-    title='Monthly Spend by Category (Line Chart)'
+    chart_type='bar',
+    title='Spending By Category'
 )
 
 st.divider()
