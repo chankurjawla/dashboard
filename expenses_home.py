@@ -14,6 +14,7 @@ from processor import clean_data
 from metrics import populatemetrics
 import ui_components4 as ui
 from chart_factory import render_dynamic_chart
+from render_chart import render_chart
 
 # NOTE: Remove st.set_page_config from here! It must live inside main app.py
 
@@ -70,6 +71,26 @@ df_monthly = (
     .sort_values("MonthYear")
     .reset_index(drop=True)
 )
+
+# Grouped Bar Chart (Year-over-Year)
+render_chart(
+    df=df_monthly,
+    x_col="MonthYear",
+    y_col="Amount",
+    chart_title=f"Monthly Spending Trend: {sel_year} vs {sel_year-1}",
+    chart_type="bar",
+)
+
+# Line Chart
+render_chart(
+    df=df_monthly,
+    x_col="MonthYear",
+    y_col="Amount",
+    chart_title="Spending Trajectory",
+    chart_type="line"
+)
+
+
 
 render_dynamic_chart(
     df=df_monthly,
