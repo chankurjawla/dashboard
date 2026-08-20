@@ -82,8 +82,8 @@ st.divider()
 
 # Example 2: Grouped side-by-side bar chart grouped by 'Year'
 render_dynamic_chart(
-    df=df,
-    x_col='Month',
+    df=df_raw,
+    x_col='Year',
     y_col='Amount',
     chart_type='bar',
     group_col='Category',
