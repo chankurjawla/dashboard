@@ -45,7 +45,16 @@ home_related_category = [
 # A.4. Filter the DataFrame using .isin()
 df_raw = df_all_cats[df_all_cats["Category"].isin(home_related_category)].copy()
 
-all_years = sorted(df_raw['Year'].unique().tolist(), reverse=True)
+from datetime import datetime
+
+# 1. Get the current calendar year
+current_year = datetime.now().year
+
+# 2. Extract unique years from the DataFrame
+raw_years = df_raw['Year'].dropna().unique().tolist()
+
+# 3. Combine, deduplicate, and sort descending
+all_years = sorted(set(raw_years + [current_year]), reverse=True)
 current_year = max(all_years)
 
 # --- 2. Header & Metrics ---
